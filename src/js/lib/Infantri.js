@@ -6,18 +6,18 @@ export class Infantri {
     }
 
     // parameter adalah posisi barunya
-    Move(newPos){
+    move(newPos) {
         this.pos = newPos;
     }
 
     // ini dipanggil di setiap turn
     // parameter bernilai true jika ada musuh di grid tsb
-    AutoAttack(u = false, d = false, l = false, r = false){
+    autoAttack(u = false, d = false, l = false, r = false) {
         switch (key) {
             case u:
                 // serang musuh disini
                 break;
-            case d:    
+            case d:
                 // serang musuh disini
                 break;
             case l:
