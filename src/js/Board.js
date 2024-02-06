@@ -8,12 +8,15 @@ export class Board {
     }
 
     block() {
-        const col = document.createElement("div");
         this.blockRow.forEach((element) => {
             const rowElement = document.createElement("section");
             rowElement.id = element;
             rowElement.setAttribute("block", `${element}`);
-
+            for (let i = 0; i <= this.blockRow.length - 1; i++) {
+                const col = document.createElement("div");
+                col.id = `${element}-${i + 1}`;
+                rowElement.appendChild(col);
+            }
             this.container.appendChild(rowElement);
         });
     }

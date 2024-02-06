@@ -4,8 +4,16 @@
 }
 #board-container {
     background-color: rgb(255, 255, 255);
-    width: 600px;
-    height: 600px;
-    border: 15px solid rgb(117, 117, 117);
     margin: 1rem auto;
+}
+
+#board-container section {
+    display: flex;
+    width: max-content;
+}
+
+#board-container div {
+    width: 50px;
+    height: 50px;
+    border: 0.1px solid black;
 }
