@@ -236,7 +236,9 @@ function removeAttackRange() {
   for (let i = 0; i < panjang; i++) {
     for (let j = 0; j < panjang; j++) {
       board[i][j].gridElement.classList.remove('attack-range');
-      board[i][j].gridElement.removeEventListener('click', () => attack(i, j));
+      board[i][j].gridElement.removeEventListener('click', function(){
+        attack(i,j);
+      });
     }
   }
 }
@@ -244,8 +246,11 @@ function removeAttackRange() {
 function attack(clickedRow, clickedCol) {
   console.log(`Serang unit dari grid (${selectedUnitElement.row}, ${selectedUnitElement.col}) ke grid (${clickedRow}, ${clickedCol})`);
   const kocok = rollTheDice();
+  console.log("[Debug] hp target : ", board[clickedRow][clickedCol].healthPoints);
   console.log("[Debug] kocok : ", kocok);
-
+  board[clickedRow][clickedCol].healthPoints = board[clickedRow][clickedCol].healthPoints - kocok;
+  console.log("[Debug] hp target : ", board[clickedRow][clickedCol].healthPoints);
+  
   removeAttackRange();
 }
 
