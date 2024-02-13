@@ -68,7 +68,8 @@ for (let i = 0; i < size; i++) {
 } //selesai membuat papan
 
 let waitingForMove = false;
-let currentInfantriPosition = { row: 0, col: 0 };
+let currentPosition = { row: 0, col: 0 };
+let selectedUnitElement;
 
 container.addEventListener('click', function(event) {
   const clickedElement = event.target;
@@ -79,17 +80,18 @@ container.addEventListener('click', function(event) {
     const clickedCol = board[clickedRow].findIndex(cell => cell.gridElement === clickedGrid);
 
     if (waitingForMove) {
-      // Tampilkan gerakan yang diizinkan atau batalkan jika diri sendiri diklik
       if (clickedGrid.classList.contains('moveable')) {
-        move(currentInfantriPosition.row, currentInfantriPosition.col, clickedRow, clickedCol);
+        move(currentPosition.row, currentPosition.col, clickedRow, clickedCol);
       }
       waitingForMove = false;
-      removeMoveableClass(); // Hapus kelas 'moveable' dari semua grid setelah pemain memilih
+      removeMoveableClass(); 
+      removeAttackRange();
     } else if (board[clickedRow][clickedCol].adaSquad) {
-      // Jika ada unit di grid yang diklik
-      waitingForMove = true; // Setel status menjadi true karena kita akan menunggu pemain untuk memilih grid berikutnya
-      currentInfantriPosition = { row: clickedRow, col: clickedCol };
-      addMoveableClass(); // Tambahkan kelas 'moveable' ke semua grid yang dapat dijangkau oleh unit yang dipilih
+      waitingForMove = true; 
+      currentPosition = { row: clickedRow, col: clickedCol };
+      selectedUnitElement = board[clickedRow][clickedCol].infantriElement;
+      addMoveableClass();
+      addAttackRange(); 
     }
   }
 });
@@ -97,10 +99,9 @@ container.addEventListener('click', function(event) {
 function addMoveableClass() {
   for (let i = 0; i < panjang; i++) {
     for (let j = 0; j < panjang; j++) {
-      const distance = Math.abs(currentInfantriPosition.row - i) + Math.abs(currentInfantriPosition.col - j);
+      const distance = Math.abs(currentPosition.row - i) + Math.abs(currentPosition.col - j);
       if (distance <= squadMoveDistance() && !board[i][j].adaSquad) {
         board[i][j].gridElement.classList.add('moveable');
-        // Tambahkan event listener untuk menangani klik pada grid yang mungkin menghasilkan pembatalan
         board[i][j].gridElement.addEventListener('click', handleMoveClick);
       }
     }
@@ -111,26 +112,24 @@ function removeMoveableClass() {
   for (let i = 0; i < panjang; i++) {
     for (let j = 0; j < panjang; j++) {
       board[i][j].gridElement.classList.remove('moveable');
-      // Hapus event listener untuk menghindari handleMoveClick dipanggil setelah kelas 'moveable' dihapus
       board[i][j].gridElement.removeEventListener('click', handleMoveClick);
     }
   }
 }
 
-// Fungsi untuk menangani aksi move
 function handleMoveClick(event) {
-  event.stopPropagation(); // Menghentikan event click agar tidak terjadi pada container
+  event.stopPropagation(); 
   const clickedElement = event.target;
   const clickedGrid = clickedElement.closest('.grid');
   const clickedRow = board.findIndex(row => row.some(cell => cell.gridElement === clickedGrid));
   const clickedCol = board[clickedRow].findIndex(cell => cell.gridElement === clickedGrid);
-  move(currentInfantriPosition.row, currentInfantriPosition.col, clickedRow, clickedCol);
+  move(currentPosition.row, currentPosition.col, clickedRow, clickedCol);
   waitingForMove = false;
-  removeMoveableClass(); // Hapus kelas 'moveable' dari semua grid setelah pemain memilih
+  removeMoveableClass();
 }
 
 function squadMoveDistance() {
-  const selectedUnitElement = board[currentInfantriPosition.row][currentInfantriPosition.col].infantriElement;
+  const selectedUnitElement = board[currentPosition.row][currentPosition.col].infantriElement;
 
   if (selectedUnitElement.classList.contains('infantriB') || selectedUnitElement.classList.contains('infantriR')) {
     return 1;
@@ -166,7 +165,41 @@ function move(fromRow, fromCol, toRow, toCol) {
     // Hapus unit dari grid sebelumnya
     fromElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
     board[fromRow][fromCol].adaSquad = false;
+    removeAttackRange();
 
     console.log(`Memindahkan unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
   }
+}
+
+function addAttackRange() {
+  for (let i = 0; i < panjang; i++) {
+    for (let j = 0; j < panjang; j++) {
+      const distance = Math.abs(currentPosition.row - i) + Math.abs(currentPosition.col - j);
+      // khusus archer
+      if (selectedUnitElement && (selectedUnitElement.classList.contains('archerB') || selectedUnitElement.classList.contains('archerR'))) {
+        if (distance <= 4 && board[i][j].adaSquad) {
+          board[i][j].gridElement.classList.add('attack-range');
+          board[i][j].gridElement.addEventListener('click', () => attack(i, j));
+        }
+      } else if (distance <= 1 && board[i][j].adaSquad) {
+        board[i][j].gridElement.classList.add('attack-range');
+        board[i][j].gridElement.addEventListener('click', () => attack(i, j));
+      }
+    }
+  }
+}
+
+function removeAttackRange() {
+  for (let i = 0; i < panjang; i++) {
+    for (let j = 0; j < panjang; j++) {
+      board[i][j].gridElement.classList.remove('attack-range');
+      board[i][j].gridElement.removeEventListener('click', () => attack(i, j));
+    }
+  }
+}
+
+function attack(clickedRow, clickedCol) {
+  console.log(`Serang unit dari grid (${currentPosition.row}, ${currentPosition.col}) ke grid (${clickedRow}, ${clickedCol})`);
+  // serrang
+  removeAttackRange();
 }
