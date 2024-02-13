@@ -79,6 +79,10 @@ h1{
     background-position: center;
 }
 
+.moveable {
+    background: rgba(0, 252, 10, 0.5);
+}
+
 .grid::after{
     content: '';
     display: block;

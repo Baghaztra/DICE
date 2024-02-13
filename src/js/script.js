@@ -48,14 +48,14 @@ for (let i = 0; i < size; i++) {
     board[baris][kolom] = {
       gridElement: grid,
       infantriElement: squad,
-      isInfantriPresent: true,
+      adaSquad: true,
     };
   } else {
     // Grid kosong
     board[baris][kolom] = {
       gridElement: grid,
       infantriElement: squad,
-      isInfantriPresent: false,
+      adaSquad: false,
     };
   }
 
@@ -65,7 +65,7 @@ for (let i = 0; i < size; i++) {
   } else {
     grid.classList.add('black');
   }
-}
+} //selesai membuat papan
 
 let waitingForMove = false;
 let currentInfantriPosition = { row: 0, col: 0 };
@@ -79,29 +79,60 @@ container.addEventListener('click', function(event) {
     const clickedCol = board[clickedRow].findIndex(cell => cell.gridElement === clickedGrid);
 
     if (waitingForMove) {
-      // Jika menunggu pemain untuk memilih grid berikutnya
-      move(currentInfantriPosition.row, currentInfantriPosition.col, clickedRow, clickedCol);
-      waitingForMove = false; 
-    } else if (board[clickedRow][clickedCol].isInfantriPresent) {
+      // Tampilkan gerakan yang diizinkan
+      if (clickedGrid.classList.contains('moveable')) {
+        move(currentInfantriPosition.row, currentInfantriPosition.col, clickedRow, clickedCol);
+        waitingForMove = false;
+        removeMoveableClass(); // Hapus kelas 'moveable' dari semua grid setelah pemain memilih
+      }
+    }else if (board[clickedRow][clickedCol].adaSquad) {
       // Jika ada unit di grid yang diklik
       waitingForMove = true; // Setel status menjadi true karena kita akan menunggu pemain untuk memilih grid berikutnya
       currentInfantriPosition = { row: clickedRow, col: clickedCol };
+      addMoveableClass(); // Tambahkan kelas 'moveable' ke semua grid yang dapat dijangkau oleh unit yang dipilih
     }
   }
 });
 
-function move(fromRow, fromCol, toRow, toCol) {
-  // Hanya lanjutkan jika ada unit di grid yang diklik
-  if (board[fromRow][fromCol].isInfantriPresent) {
-    // Hapus unit dari grid saat ini
-    board[fromRow][fromCol].isInfantriPresent = false;
-    const fromElement = board[fromRow][fromCol].infantriElement;
+function addMoveableClass() {
+  for (let i = 0; i < panjang; i++) {
+    for (let j = 0; j < panjang; j++) {
+      const distance = Math.abs(currentInfantriPosition.row - i) + Math.abs(currentInfantriPosition.col - j);
+      if (distance <= squadMoveDistance() && !board[i][j].adaSquad) {
+        board[i][j].gridElement.classList.add('moveable');
+      }
+    }
+  }
+}
 
+function removeMoveableClass() {
+  for (let i = 0; i < panjang; i++) {
+    for (let j = 0; j < panjang; j++) {
+      board[i][j].gridElement.classList.remove('moveable');
+    }
+  }
+}
+
+function squadMoveDistance() {
+  const selectedUnitElement = board[currentInfantriPosition.row][currentInfantriPosition.col].infantriElement;
+
+  if (selectedUnitElement.classList.contains('infantriB') || selectedUnitElement.classList.contains('infantriR')) {
+    return 1;
+  } else if (selectedUnitElement.classList.contains('cavalryB') || selectedUnitElement.classList.contains('cavalryR')) {
+    return 3;
+  } else {
+    return 1;
+  }
+}
+
+function move(fromRow, fromCol, toRow, toCol) {
+  if (board[fromRow][fromCol].adaSquad) {
+    const fromElement = board[fromRow][fromCol].infantriElement;
+    
     // Tambahkan unit ke grid yang diklik berikutnya
-    board[toRow][toCol].isInfantriPresent = true;
+    board[toRow][toCol].adaSquad = true;
     const toElement = board[toRow][toCol].infantriElement;
 
-    // Sesuaikan class unit pada grid yang baru
     if (fromElement.classList.contains('infantriB')) {
       toElement.classList.add('infantriB');
     } else if (fromElement.classList.contains('infantriR')) {
@@ -110,11 +141,15 @@ function move(fromRow, fromCol, toRow, toCol) {
       toElement.classList.add('archerB');
     } else if (fromElement.classList.contains('archerR')) {
       toElement.classList.add('archerR');
-    } else {
-      toElement.classList.add('infantri');
-    }    
-    fromElement.classList.remove('infantri', 'infantriB', 'infantriR', 'archerB', 'archerR');
+    } else if (fromElement.classList.contains('cavalryB')) {
+      toElement.classList.add('cavalryB');
+    } else if (fromElement.classList.contains('cavalryR')) {
+      toElement.classList.add('cavalryR');
+    }  
 
+    // Hapus unit dari grid sebelumnya
+    fromElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
+    board[fromRow][fromCol].adaSquad = false;
 
     console.log(`Memindahkan unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
   }
