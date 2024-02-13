@@ -90,3 +90,24 @@ h1{
     height: 50px;
     position: absolute;
 }
+
+.dice-box{
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid #000;
+    padding: 10px; 
+    z-index: 999;
+}
+.dice {
+    text-align: center;
+    display: inline-block;
+    margin: 10px;
+}
+.even-roll {
+    transition: transform 1.5s ease-out;
+}
+.odd-roll {
+    transition: transform 1.25s ease-out;
+}
