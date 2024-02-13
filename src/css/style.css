@@ -23,17 +23,57 @@ h1{
     cursor: pointer;
 }
 .black {
-    background-color: rgb(47, 47, 47);
+    background-color: #262626;
 }
 
 .white {
-    background-color: rgb(204, 204, 204);
+    background-color: #D9D9D9;
 }
 
-.infantri {
+.infantriB {
     width: 100%;
     height: 100%;
     background-image: url(../../img/InfBlue.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.infantriR {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../img/InfRed.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.archerB {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../img/ArcBlue.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.archerR {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../img/ArcRed.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.cavalryB {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../img/CavBlue.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.cavalryR {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../img/CavRed.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
