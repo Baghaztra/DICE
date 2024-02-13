@@ -29,33 +29,75 @@ for (let i = 0; i < size; i++) {
       (kolom === 10 && (baris === 1 || baris === 10))) 
   {
     if ((kolom == 0 && (baris < 3 || baris > 8)) ||
-        (kolom == 1 && (baris == 1 || baris == 10))) 
-    {
+        (kolom == 1 && (baris == 1 || baris == 10))){
       squad.classList.add('cavalryB');
+      board[baris][kolom] = {
+        gridElement: grid,
+        unitElement: squad,
+        adaSquad: true,
+        team: 'blue',
+        healthPoints: 6,
+      };
     }else if  ((kolom == 11 && (baris < 3 || baris > 8)) ||
-    (kolom == 10 && (baris == 1 || baris == 10))) 
-    {
+               (kolom == 10 && (baris == 1 || baris == 10))){
       squad.classList.add('cavalryR');
+      board[baris][kolom] = {
+        gridElement: grid,
+        unitElement: squad,
+        adaSquad: true,
+        team: 'red',
+        healthPoints: 6,
+      };
     }else if (kolom === 1) {
       squad.classList.add('infantriB');
+      board[baris][kolom] = {
+        gridElement: grid,
+        unitElement: squad,
+        adaSquad: true,
+        team: 'blue',
+        healthPoints: 6,
+      };
     } else if (kolom === 10) {
       squad.classList.add('infantriR');
+      board[baris][kolom] = {
+        gridElement: grid,
+        unitElement: squad,
+        adaSquad: true,
+        team: 'red',
+        healthPoints: 6,
+      };
     } else if (kolom === 0) {
       squad.classList.add('archerB');
+      board[baris][kolom] = {
+        gridElement: grid,
+        unitElement: squad,
+        adaSquad: true,
+        team: 'blue',
+        healthPoints: 6,
+      };
     } else if (kolom === 11) {
       squad.classList.add('archerR');
+      board[baris][kolom] = {
+        gridElement: grid,
+        unitElement: squad,
+        adaSquad: true,
+        team: 'red',
+        healthPoints: 6,
+      };
     }
     board[baris][kolom] = {
       gridElement: grid,
-      infantriElement: squad,
+      unitElement: squad,
       adaSquad: true,
     };
   } else {
     // Grid kosong
     board[baris][kolom] = {
       gridElement: grid,
-      infantriElement: squad,
+      unitElement: squad,
       adaSquad: false,
+      team: '',
+      healthPoints: 0,
     };
   }
 
@@ -89,7 +131,7 @@ container.addEventListener('click', function(event) {
     } else if (board[clickedRow][clickedCol].adaSquad) {
       waitingForMove = true; 
       currentPosition = { row: clickedRow, col: clickedCol };
-      selectedUnitElement = board[clickedRow][clickedCol].infantriElement;
+      selectedUnitElement = board[clickedRow][clickedCol];
       addMoveableClass();
       addAttackRange(); 
     }
@@ -129,7 +171,7 @@ function handleMoveClick(event) {
 }
 
 function squadMoveDistance() {
-  const selectedUnitElement = board[currentPosition.row][currentPosition.col].infantriElement;
+  const selectedUnitElement = board[currentPosition.row][currentPosition.col].unitElement;
 
   if (selectedUnitElement.classList.contains('infantriB') || selectedUnitElement.classList.contains('infantriR')) {
     return 1;
@@ -142,11 +184,19 @@ function squadMoveDistance() {
 
 function move(fromRow, fromCol, toRow, toCol) {
   if (board[fromRow][fromCol].adaSquad) {
-    const fromElement = board[fromRow][fromCol].infantriElement;
+    const fromElement = board[fromRow][fromCol].unitElement;
 
     // Tambahkan unit ke grid yang diklik berikutnya
-    board[toRow][toCol].adaSquad = true;
-    const toElement = board[toRow][toCol].infantriElement;
+    board[toRow][toCol] = {
+      gridElement: board[toRow][toCol].gridElement,
+      unitElement: board[toRow][toCol].unitElement,
+      adaSquad: true,
+      team: board[fromRow][fromCol].team,
+      healthPoints: board[fromRow][fromCol].healthPoints,
+      row: toRow,
+      col: toCol,
+    };
+    const toElement = board[toRow][toCol].unitElement;
 
     if (fromElement.classList.contains('infantriB')) {
       toElement.classList.add('infantriB');
@@ -165,6 +215,7 @@ function move(fromRow, fromCol, toRow, toCol) {
     // Hapus unit dari grid sebelumnya
     fromElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
     board[fromRow][fromCol].adaSquad = false;
+    board[fromRow][fromCol].healthPoints = 0;
     removeAttackRange();
 
     console.log(`Memindahkan unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
@@ -174,14 +225,17 @@ function move(fromRow, fromCol, toRow, toCol) {
 function addAttackRange() {
   for (let i = 0; i < panjang; i++) {
     for (let j = 0; j < panjang; j++) {
-      const distance = Math.abs(currentPosition.row - i) + Math.abs(currentPosition.col - j);
+      const distance = Math.abs(selectedUnitElement.row - i) + Math.abs(selectedUnitElement.col - j);
       // khusus archer
-      if (selectedUnitElement && (selectedUnitElement.classList.contains('archerB') || selectedUnitElement.classList.contains('archerR'))) {
-        if (distance <= 4 && board[i][j].adaSquad) {
+      if (selectedUnitElement.unitElement.classList.contains('archerB') || selectedUnitElement.unitElement.classList.contains('archerR')) {
+        console.log("arcer dipilih"); //ini jalan
+        if (distance <= 4 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
+          // ini ngga 
           board[i][j].gridElement.classList.add('attack-range');
           board[i][j].gridElement.addEventListener('click', () => attack(i, j));
         }
-      } else if (distance <= 1 && board[i][j].adaSquad) {
+      } else if (distance <= 1 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
+        console.log("bukan arcer dipilih");
         board[i][j].gridElement.classList.add('attack-range');
         board[i][j].gridElement.addEventListener('click', () => attack(i, j));
       }
@@ -199,7 +253,7 @@ function removeAttackRange() {
 }
 
 function attack(clickedRow, clickedCol) {
-  console.log(`Serang unit dari grid (${currentPosition.row}, ${currentPosition.col}) ke grid (${clickedRow}, ${clickedCol})`);
-  // serrang
+  console.log(`Serang unit dari grid (${selectedUnitElement.row}, ${selectedUnitElement.col}) ke grid (${clickedRow}, ${clickedCol})`);
+  // serang
   removeAttackRange();
 }
