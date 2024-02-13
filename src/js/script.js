@@ -23,89 +23,59 @@ for (let i = 0; i < size; i++) {
 
   // Default
   if ((kolom === 1 && baris >= 3 && baris <= 8) || 
-      (kolom === 10 && baris >= 3 && baris <= 8) ||
-      (kolom === 0 ) || (kolom === 11) ||
-      (kolom === 1 && (baris === 1 || baris === 10)) || 
-      (kolom === 10 && (baris === 1 || baris === 10))) 
-  {
-    if ((kolom == 0 && (baris < 3 || baris > 8)) ||
-        (kolom == 1 && (baris == 1 || baris == 10))){
-      squad.classList.add('cavalryB');
-      board[baris][kolom] = {
-        gridElement: grid,
-        unitElement: squad,
-        adaSquad: true,
-        team: 'blue',
-        healthPoints: 6,
-      };
-      console.log("[debug] Blue cavalry created: ",board[baris][kolom]);
-    }else if  ((kolom == 11 && (baris < 3 || baris > 8)) ||
-               (kolom == 10 && (baris == 1 || baris == 10))){
-      squad.classList.add('cavalryR');
-      board[baris][kolom] = {
-        gridElement: grid,
-        unitElement: squad,
-        adaSquad: true,
-        team: 'red',
-        healthPoints: 6,
-      };
-      console.log("[debug] Red cavalry created: ",board[baris][kolom]);
-    }else if (kolom === 1) {
-      squad.classList.add('infantriB');
-      board[baris][kolom] = {
-        gridElement: grid,
-        unitElement: squad,
-        adaSquad: true,
-        team: 'blue',
-        healthPoints: 6,
-      };
-      console.log("[debug] Blue infantri created: ",board[baris][kolom]);
-    } else if (kolom === 10) {
-      squad.classList.add('infantriR');
-      board[baris][kolom] = {
-        gridElement: grid,
-        unitElement: squad,
-        adaSquad: true,
-        team: 'red',
-        healthPoints: 6,
-      };
-      console.log("[debug] Red infantri created: ",board[baris][kolom]);
-    } else if (kolom === 0) {
-      squad.classList.add('archerB');
-      board[baris][kolom] = {
-        gridElement: grid,
-        unitElement: squad,
-        adaSquad: true,
-        team: 'blue',
-        healthPoints: 6,
-      };
-      console.log("[debug] Blue archer created: ",board[baris][kolom]);
-    } else if (kolom === 11) {
-      squad.classList.add('archerR');
-      board[baris][kolom] = {
-        gridElement: grid,
-        unitElement: squad,
-        adaSquad: true,
-        team: 'red',
-        healthPoints: 6,
-      };
-      console.log("[debug] Red archer created: ",board[baris][kolom]);
-    }
-    board[baris][kolom] = {
-      gridElement: grid,
-      unitElement: squad,
-      adaSquad: true,
-    };
-  } else {
-    // Grid kosong
-    board[baris][kolom] = {
-      gridElement: grid,
-      unitElement: squad,
-      adaSquad: false,
-      team: '',
-      healthPoints: 0,
-    };
+    (kolom === 10 && baris >= 3 && baris <= 8) ||
+    (kolom === 0 ) || (kolom === 11) ||
+    (kolom === 1 && (baris === 1 || baris === 10)) || 
+    (kolom === 10 && (baris === 1 || baris === 10))) 
+{
+  let team = '';
+  let healthPoints = 6;
+
+  if ((kolom == 0 && (baris < 3 || baris > 8)) ||
+      (kolom == 1 && (baris == 1 || baris == 10))){
+    squad.classList.add('cavalryB');
+    team = 'blue';
+    console.log("[debug] Blue cavalry created: ", board[baris][kolom]);
+  } else if  ((kolom == 11 && (baris < 3 || baris > 8)) ||
+             (kolom == 10 && (baris == 1 || baris == 10))){
+    squad.classList.add('cavalryR');
+    team = 'red';
+    console.log("[debug] Red cavalry created: ", board[baris][kolom]);
+  } else if (kolom === 1) {
+    squad.classList.add('infantriB');
+    team = 'blue';
+    console.log("[debug] Blue infantri created: ", board[baris][kolom]);
+  } else if (kolom === 10) {
+    squad.classList.add('infantriR');
+    team = 'red';
+    console.log("[debug] Red infantri created: ", board[baris][kolom]);
+  } else if (kolom === 0) {
+    squad.classList.add('archerB');
+    team = 'blue';
+    console.log("[debug] Blue archer created: ", board[baris][kolom]);
+  } else if (kolom === 11) {
+    squad.classList.add('archerR');
+    team = 'red';
+    console.log("[debug] Red archer created: ", board[baris][kolom]);
   }
+  // Grid berisi
+  board[baris][kolom] = {
+    gridElement: grid,
+    unitElement: squad,
+    adaSquad: true,
+    team: team,
+    healthPoints: healthPoints,
+  };
+} else {
+  // Grid kosong
+  board[baris][kolom] = {
+    gridElement: grid,
+    unitElement: squad,
+    adaSquad: false,
+    team: '',
+    healthPoints: 0,
+  };
+}
 
   // Nambahin hitam/putih silang   
   if ((baris + kolom) % 2 === 1) {
