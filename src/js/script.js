@@ -38,6 +38,7 @@ for (let i = 0; i < size; i++) {
         team: 'blue',
         healthPoints: 6,
       };
+      console.log("[debug] Blue cavalry created: ",board[baris][kolom]);
     }else if  ((kolom == 11 && (baris < 3 || baris > 8)) ||
                (kolom == 10 && (baris == 1 || baris == 10))){
       squad.classList.add('cavalryR');
@@ -48,6 +49,7 @@ for (let i = 0; i < size; i++) {
         team: 'red',
         healthPoints: 6,
       };
+      console.log("[debug] Red cavalry created: ",board[baris][kolom]);
     }else if (kolom === 1) {
       squad.classList.add('infantriB');
       board[baris][kolom] = {
@@ -57,6 +59,7 @@ for (let i = 0; i < size; i++) {
         team: 'blue',
         healthPoints: 6,
       };
+      console.log("[debug] Blue infantri created: ",board[baris][kolom]);
     } else if (kolom === 10) {
       squad.classList.add('infantriR');
       board[baris][kolom] = {
@@ -66,6 +69,7 @@ for (let i = 0; i < size; i++) {
         team: 'red',
         healthPoints: 6,
       };
+      console.log("[debug] Red infantri created: ",board[baris][kolom]);
     } else if (kolom === 0) {
       squad.classList.add('archerB');
       board[baris][kolom] = {
@@ -75,6 +79,7 @@ for (let i = 0; i < size; i++) {
         team: 'blue',
         healthPoints: 6,
       };
+      console.log("[debug] Blue archer created: ",board[baris][kolom]);
     } else if (kolom === 11) {
       squad.classList.add('archerR');
       board[baris][kolom] = {
@@ -84,6 +89,7 @@ for (let i = 0; i < size; i++) {
         team: 'red',
         healthPoints: 6,
       };
+      console.log("[debug] Red archer created: ",board[baris][kolom]);
     }
     board[baris][kolom] = {
       gridElement: grid,
@@ -109,6 +115,15 @@ for (let i = 0; i < size; i++) {
   }
 } //selesai membuat papan
 
+// Debug ulang
+for (let i = 0; i < 12; i++) {
+  for (let j = 0; j < 12; j++) {
+    if (board[i][j].adaSquad) {
+      console.log("[Debug] cek "+i+", "+j+": ", board[i][j]);
+    }
+  }
+}
+
 let waitingForMove = false;
 let currentPosition = { row: 0, col: 0 };
 let selectedUnitElement;
@@ -132,6 +147,8 @@ container.addEventListener('click', function(event) {
       waitingForMove = true; 
       currentPosition = { row: clickedRow, col: clickedCol };
       selectedUnitElement = board[clickedRow][clickedCol];
+      // console.log("Selected: "+clickedRow+", "+clickedCol+": ", board[clickedRow][clickedCol]);
+      console.log("Selected: "+clickedRow+", "+clickedCol+": ", selectedUnitElement);
       addMoveableClass();
       addAttackRange(); 
     }
@@ -229,8 +246,10 @@ function addAttackRange() {
       // khusus archer
       if (selectedUnitElement.unitElement.classList.contains('archerB') || selectedUnitElement.unitElement.classList.contains('archerR')) {
         console.log("arcer dipilih"); //ini jalan
+        console.log(`Selected Team: ${selectedUnitElement.team}, Board Team: ${board[i][j].team}`);
         if (distance <= 4 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
           // ini ngga 
+          console.log("sebuah tile attckable untuk archer");
           board[i][j].gridElement.classList.add('attack-range');
           board[i][j].gridElement.addEventListener('click', () => attack(i, j));
         }
