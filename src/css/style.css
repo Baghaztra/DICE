@@ -79,11 +79,17 @@ h1{
     background-position: center;
 }
 
-.moveable {
-    background: rgba(0, 252, 10, 0.5);
+.moveable.black {
+    background: #139118;
 }
-.attack-range {
-    background: rgba(252, 21, 0, 0.5);
+.moveable.white {
+    background: #6DEB72;
+}
+.attack-range.black {
+    background: #902828;
+}
+.attack-range.white {
+    background: #EA8181;
 }
 
 .dice-box{

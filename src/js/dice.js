@@ -4,3 +4,4 @@ function rollTheDice() {
     dice.querySelector('img').setAttribute('src', 'img/dice' + rand + '.png');
     return rand;
 }
+module.exports(rollTheDice);

@@ -243,6 +243,15 @@ function removeAttackRange() {
 
 function attack(clickedRow, clickedCol) {
   console.log(`Serang unit dari grid (${selectedUnitElement.row}, ${selectedUnitElement.col}) ke grid (${clickedRow}, ${clickedCol})`);
-  // serang
+  const kocok = rollTheDice();
+  console.log("[Debug] kocok : ", kocok);
+
   removeAttackRange();
+}
+
+function rollTheDice() {
+  let dice = document.querySelector(".dice");
+  let rand = Math.floor(Math.random() * 6) + 1;
+  dice.querySelector('img').setAttribute('src', 'img/dice' + rand + '.png');
+  return rand;
 }
