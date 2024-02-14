@@ -166,10 +166,8 @@ function handleMoveClick(event) {
 function squadMoveDistance() {
   const selectedUnitElement = board[currentPosition.row][currentPosition.col].unitElement;
 
-  if (selectedUnitElement.classList.contains('infantriB') || selectedUnitElement.classList.contains('infantriR')) {
-    return 1;
-  } else if (selectedUnitElement.classList.contains('cavalryB') || selectedUnitElement.classList.contains('cavalryR')) {
-    return 3;
+  if (selectedUnitElement.classList.contains('cavalryB') || selectedUnitElement.classList.contains('cavalryR')) {
+    return 4;
   } else {
     return 1;
   }
@@ -181,7 +179,10 @@ function action(fromRow, fromCol, toRow, toCol) {
     if (board[toRow][toCol].adaSquad) {
       // Logika serangan
       console.log(`Serang unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
-      const kocok = rollTheDice();
+      const kocok = Math.floor(Math.random() * 6) + 1;
+      const diceElement = document.getElementById('dice');
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${kocok}-fill"></i>`;
+      
       console.log("[Debug] hp target awal : ", board[toRow][toCol].healthPoints);
       console.log("[Debug] kocok : ", kocok);
       board[toRow][toCol].healthPoints -= kocok;
@@ -248,7 +249,6 @@ function action(fromRow, fromCol, toRow, toCol) {
   }
 }
 
-
 function addAttackRange() {
   for (let i = 0; i < panjang; i++) {
     for (let j = 0; j < panjang; j++) {
@@ -270,11 +270,4 @@ function removeAttackRange() {
       board[i][j].gridElement.classList.remove('attack-range');
     }
   }
-}
-
-function rollTheDice() {
-  let dice = document.querySelector(".dice");
-  let rand = Math.floor(Math.random() * 6) + 1;
-  dice.querySelector('img').setAttribute('src', 'img/dice' + rand + '.png');
-  return rand;
 }

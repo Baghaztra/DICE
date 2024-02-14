@@ -2,15 +2,14 @@ body{
     font-family: Arial, Helvetica, sans-serif;
 }
 
-h1{
-    font-size: 80px;
-    text-align: center;
-    margin: 10px;
-}
+/* h1{
+    margin: 20px;
+} */
 
-.container {
-    width: 620px;
-    margin: auto;
+.chessBoard {
+    width: 620px !important;
+    /* display: flex; */
+    /* margin: auto; */
     /* border: 2px solid black; */
 }
 .grid{
@@ -21,12 +20,10 @@ h1{
     float: left;
     border: 1px solid black;
     cursor: pointer;
-    position: relative;
 }
 .black {
     background-color: #262626;
 }
-
 .white {
     background-color: #D9D9D9;
 }
@@ -102,17 +99,13 @@ h1{
 }
 
 .dice-box{
-    position: fixed;
-    left: 10px;
-    top: 50%;
-    border: 2px solid #000;
+    /* position: fixed; */
+    /* border: 2px solid #000; */
     padding: 10px; 
     z-index: 999;
 }
 .dice {
     text-align: center;
     display: inline-block;
-    margin: 10px;
-    width: 100px;
-    height: 100px;
+    font-size: 90px;
 }
