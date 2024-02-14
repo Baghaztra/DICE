@@ -35,28 +35,22 @@ for (let i = 0; i < size; i++) {
       (kolom == 1 && (baris == 1 || baris == 10))){
     squad.classList.add('cavalryB');
     team = 'blue';
-    console.log("[debug] Blue cavalry created: ", board[baris][kolom]);
   } else if  ((kolom == 11 && (baris < 3 || baris > 8)) ||
              (kolom == 10 && (baris == 1 || baris == 10))){
     squad.classList.add('cavalryR');
     team = 'red';
-    console.log("[debug] Red cavalry created: ", board[baris][kolom]);
   } else if (kolom === 1) {
     squad.classList.add('infantriB');
     team = 'blue';
-    console.log("[debug] Blue infantri created: ", board[baris][kolom]);
   } else if (kolom === 10) {
     squad.classList.add('infantriR');
     team = 'red';
-    console.log("[debug] Red infantri created: ", board[baris][kolom]);
   } else if (kolom === 0) {
     squad.classList.add('archerB');
     team = 'blue';
-    console.log("[debug] Blue archer created: ", board[baris][kolom]);
   } else if (kolom === 11) {
     squad.classList.add('archerR');
     team = 'red';
-    console.log("[debug] Red archer created: ", board[baris][kolom]);
   }
   // Grid berisi
   board[baris][kolom] = {
@@ -85,7 +79,7 @@ for (let i = 0; i < size; i++) {
   }
 } //selesai membuat papan
 
-// Debug ulang
+// Memastikan map diload dengan benar
 for (let i = 0; i < 12; i++) {
   for (let j = 0; j < 12; j++) {
     if (board[i][j].adaSquad) {
@@ -105,19 +99,20 @@ container.addEventListener('click', function(event) {
   if (clickedGrid) {
     const clickedRow = board.findIndex(row => row.some(cell => cell.gridElement === clickedGrid));
     const clickedCol = board[clickedRow].findIndex(cell => cell.gridElement === clickedGrid);
-
+    
+    currentPosition = { row: clickedRow, col: clickedCol };
     if (waitingForMove) {
+      console.log('a');
       if (clickedGrid.classList.contains('moveable')) {
         move(currentPosition.row, currentPosition.col, clickedRow, clickedCol);
       }
-      waitingForMove = false;
+      console.log('b');
       removeMoveableClass(); 
       removeAttackRange();
+      waitingForMove = false;
     } else if (board[clickedRow][clickedCol].adaSquad) {
       waitingForMove = true; 
-      currentPosition = { row: clickedRow, col: clickedCol };
       selectedUnitElement = board[clickedRow][clickedCol];
-      // console.log("Selected: "+clickedRow+", "+clickedCol+": ", board[clickedRow][clickedCol]);
       console.log("Selected: "+clickedRow+", "+clickedCol+": ", selectedUnitElement);
       addMoveableClass();
       addAttackRange(); 
@@ -213,18 +208,16 @@ function addAttackRange() {
   for (let i = 0; i < panjang; i++) {
     for (let j = 0; j < panjang; j++) {
       const distance = Math.abs(selectedUnitElement.row - i) + Math.abs(selectedUnitElement.col - j);
-      // khusus archer
       if (selectedUnitElement.unitElement.classList.contains('archerB') || selectedUnitElement.unitElement.classList.contains('archerR')) {
-        console.log("arcer dipilih"); //ini jalan
+        console.log("Archer dipilih");
         console.log(`Selected Team: ${selectedUnitElement.team}, Board Team: ${board[i][j].team}`);
         if (distance <= 4 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
-          // ini ngga 
           console.log("sebuah tile attckable untuk archer");
           board[i][j].gridElement.classList.add('attack-range');
           board[i][j].gridElement.addEventListener('click', () => attack(i, j));
         }
       } else if (distance <= 1 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
-        console.log("bukan arcer dipilih");
+        console.log("Unit meele dipilih");
         board[i][j].gridElement.classList.add('attack-range');
         board[i][j].gridElement.addEventListener('click', () => attack(i, j));
       }
@@ -235,23 +228,30 @@ function addAttackRange() {
 function removeAttackRange() {
   for (let i = 0; i < panjang; i++) {
     for (let j = 0; j < panjang; j++) {
-      board[i][j].gridElement.classList.remove('attack-range');
-      board[i][j].gridElement.removeEventListener('click', function(){
-        attack(i,j);
-      });
+      const gridElement = board[i][j].gridElement;
+
+      // Hapus kelas dan event listener attack-range
+      gridElement.classList.remove('attack-range');
+      gridElement.removeEventListener('click', () => attack(event, clickedRow, clickedCol));
     }
   }
 }
 
 function attack(clickedRow, clickedCol) {
-  console.log(`Serang unit dari grid (${selectedUnitElement.row}, ${selectedUnitElement.col}) ke grid (${clickedRow}, ${clickedCol})`);
+  // event.stopPropagation();
+  // Logika serangan
+  console.log(`Serang unit dari grid (${currentPosition.row}, ${currentPosition.col}) ke grid (${clickedRow}, ${clickedCol})`);
   const kocok = rollTheDice();
-  console.log("[Debug] hp target : ", board[clickedRow][clickedCol].healthPoints);
+  console.log("[Debug] hp target awal : ", board[clickedRow][clickedCol].healthPoints);
   console.log("[Debug] kocok : ", kocok);
-  board[clickedRow][clickedCol].healthPoints = board[clickedRow][clickedCol].healthPoints - kocok;
-  console.log("[Debug] hp target : ", board[clickedRow][clickedCol].healthPoints);
-  
-  removeAttackRange();
+  board[clickedRow][clickedCol].healthPoints -= kocok;
+  console.log("[Debug] hp target setelah diserang : ", board[clickedRow][clickedCol].healthPoints);
+
+  // Hapus kelas attack-range dan event listener dari grid yang diserang
+  const target = board[clickedRow][clickedCol];
+  target.gridElement.classList.remove('attack-range');
+  target.gridElement.removeEventListener('click', () => attack(event, clickedRow, clickedCol));
+  console.log("Target: ", target);
 }
 
 function rollTheDice() {
