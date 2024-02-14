@@ -114,8 +114,8 @@ container.addEventListener('click', function(event) {
     currentPosition = { row: clickedRow, col: clickedCol };
     if (waitingForMove) {
       console.log('a');
-      if (clickedGrid.classList.contains('moveable')) {
-        move(currentPosition.row, currentPosition.col, clickedRow, clickedCol);
+      if (clickedGrid.classList.contains('moveable') || clickedGrid.classList.contains('attack-range')) {
+        action(currentPosition.row, currentPosition.col, clickedRow, clickedCol);
       }
       console.log('b');
       removeMoveableClass(); 
@@ -158,7 +158,7 @@ function handleMoveClick(event) {
   const clickedGrid = clickedElement.closest('.grid');
   const clickedRow = board.findIndex(row => row.some(cell => cell.gridElement === clickedGrid));
   const clickedCol = board[clickedRow].findIndex(cell => cell.gridElement === clickedGrid);
-  move(currentPosition.row, currentPosition.col, clickedRow, clickedCol);
+  action(currentPosition.row, currentPosition.col, clickedRow, clickedCol);
   waitingForMove = false;
   removeMoveableClass();
 }
@@ -175,48 +175,75 @@ function squadMoveDistance() {
   }
 }
 
-function move(fromRow, fromCol, toRow, toCol) {
+function action(fromRow, fromCol, toRow, toCol) {
   if (board[fromRow][fromCol].adaSquad) {
-    const fromElement = board[fromRow][fromCol].unitElement;
-    const fromHealthBar = board[fromRow][fromCol].healthBar;
+    // berarti nyerang :v
+    if (board[toRow][toCol].adaSquad) {
+      // Logika serangan
+      console.log(`Serang unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
+      const kocok = rollTheDice();
+      console.log("[Debug] hp target awal : ", board[toRow][toCol].healthPoints);
+      console.log("[Debug] kocok : ", kocok);
+      board[toRow][toCol].healthPoints -= kocok;
+      console.log("[Debug] hp target setelah diserang : ", board[toRow][toCol].healthPoints);
 
-    // Tambahkan unit ke grid yang diklik berikutnya
-    board[toRow][toCol] = {
-      gridElement: board[toRow][toCol].gridElement,
-      unitElement: board[toRow][toCol].unitElement,
-      adaSquad: true,
-      team: board[fromRow][fromCol].team,
-      healthPoints: board[fromRow][fromCol].healthPoints,
-      healthBar: fromHealthBar, // Gunakan healthBar dari unit sebelumnya
-      row: toRow,
-      col: toCol,
-    };
-    const toElement = board[toRow][toCol].unitElement;
+      const target = board[toRow][toCol];
+      console.log("Target: ", target);
 
-    if (fromElement.classList.contains('infantriB')) {
-      toElement.classList.add('infantriB');
-    } else if (fromElement.classList.contains('infantriR')) {
-      toElement.classList.add('infantriR');
-    } else if (fromElement.classList.contains('archerB')) {
-      toElement.classList.add('archerB');
-    } else if (fromElement.classList.contains('archerR')) {
-      toElement.classList.add('archerR');
-    } else if (fromElement.classList.contains('cavalryB')) {
-      toElement.classList.add('cavalryB');
-    } else if (fromElement.classList.contains('cavalryR')) {
-      toElement.classList.add('cavalryR');
-    }  
+      // Update health bar
+      const remainingHealthPercentage = (board[toRow][toCol].healthPoints / 6) * 100;
+      board[toRow][toCol].healthBar.style.width = `${remainingHealthPercentage}%`;
 
-    // Pindahkan health bar ke elemen unit yang baru
-    toElement.appendChild(fromHealthBar);
-
-    // Hapus unit dari grid sebelumnya
-    fromElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
-    board[fromRow][fromCol].adaSquad = false;
-    board[fromRow][fromCol].healthPoints = 0;
-    removeAttackRange();
-
-    console.log(`Memindahkan unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
+      // apakah target mati?
+      if(board[toRow][toCol].healthPoints <= 0){
+        board[fromRow][fromCol].unitElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
+        board[fromRow][fromCol].adaSquad = false;
+      }
+    }
+    
+    // Kalau ini pindah :v
+    else{
+      const fromElement = board[fromRow][fromCol].unitElement;
+      const fromHealthBar = board[fromRow][fromCol].healthBar;
+  
+      // Tambahkan unit ke grid yang diklik berikutnya
+      board[toRow][toCol] = {
+        gridElement: board[toRow][toCol].gridElement,
+        unitElement: board[toRow][toCol].unitElement,
+        adaSquad: true,
+        team: board[fromRow][fromCol].team,
+        healthPoints: board[fromRow][fromCol].healthPoints,
+        healthBar: fromHealthBar,
+        row: toRow,
+        col: toCol,
+      };
+      const toElement = board[toRow][toCol].unitElement;
+  
+      if (fromElement.classList.contains('infantriB')) {
+        toElement.classList.add('infantriB');
+      } else if (fromElement.classList.contains('infantriR')) {
+        toElement.classList.add('infantriR');
+      } else if (fromElement.classList.contains('archerB')) {
+        toElement.classList.add('archerB');
+      } else if (fromElement.classList.contains('archerR')) {
+        toElement.classList.add('archerR');
+      } else if (fromElement.classList.contains('cavalryB')) {
+        toElement.classList.add('cavalryB');
+      } else if (fromElement.classList.contains('cavalryR')) {
+        toElement.classList.add('cavalryR');
+      }  
+  
+      // Pindahkan health bar ke elemen unit yang baru
+      toElement.appendChild(fromHealthBar);
+  
+      // Hapus unit dari grid sebelumnya
+      fromElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
+      board[fromRow][fromCol].adaSquad = false;
+      board[fromRow][fromCol].healthPoints = 0;
+      removeAttackRange();
+  
+      console.log(`Memindahkan unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
+    }
   }
 }
 
@@ -226,17 +253,12 @@ function addAttackRange() {
     for (let j = 0; j < panjang; j++) {
       const distance = Math.abs(selectedUnitElement.row - i) + Math.abs(selectedUnitElement.col - j);
       if (selectedUnitElement.unitElement.classList.contains('archerB') || selectedUnitElement.unitElement.classList.contains('archerR')) {
-        console.log("Archer dipilih");
-        console.log(`Selected Team: ${selectedUnitElement.team}, Board Team: ${board[i][j].team}`);
         if (distance <= 4 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
-          console.log("sebuah tile attckable untuk archer");
           board[i][j].gridElement.classList.add('attack-range');
           board[i][j].gridElement.addEventListener('click', () => attack(i, j));
         }
       } else if (distance <= 1 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
-        console.log("Unit meele dipilih");
         board[i][j].gridElement.classList.add('attack-range');
-        board[i][j].gridElement.addEventListener('click', () => attack(i, j));
       }
     }
   }
@@ -245,33 +267,9 @@ function addAttackRange() {
 function removeAttackRange() {
   for (let i = 0; i < panjang; i++) {
     for (let j = 0; j < panjang; j++) {
-      const gridElement = board[i][j].gridElement;
-
-      // Hapus kelas dan event listener attack-range
-      gridElement.classList.remove('attack-range');
-      gridElement.removeEventListener('click', () => attack(event, clickedRow, clickedCol));
+      board[i][j].gridElement.classList.remove('attack-range');
     }
   }
-}
-
-function attack(clickedRow, clickedCol) {
-  // Logika serangan
-  console.log(`Serang unit dari grid (${currentPosition.row}, ${currentPosition.col}) ke grid (${clickedRow}, ${clickedCol})`);
-  const kocok = rollTheDice();
-  console.log("[Debug] hp target awal : ", board[clickedRow][clickedCol].healthPoints);
-  console.log("[Debug] kocok : ", kocok);
-  board[clickedRow][clickedCol].healthPoints -= kocok;
-  console.log("[Debug] hp target setelah diserang : ", board[clickedRow][clickedCol].healthPoints);
-
-  // Hapus kelas attack-range dan event listener dari grid yang diserang
-  const target = board[clickedRow][clickedCol];
-  target.gridElement.classList.remove('attack-range');
-  target.gridElement.removeEventListener('click', () => attack(event, clickedRow, clickedCol));
-  console.log("Target: ", target);
-
-  // Update health bar
-  const remainingHealthPercentage = (board[clickedRow][clickedCol].healthPoints / 6) * 100;
-  board[clickedRow][clickedCol].healthBar.style.width = `${remainingHealthPercentage}%`;
 }
 
 function rollTheDice() {
