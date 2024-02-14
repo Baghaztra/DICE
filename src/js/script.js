@@ -196,8 +196,9 @@ function action(fromRow, fromCol, toRow, toCol) {
 
       // apakah target mati?
       if(board[toRow][toCol].healthPoints <= 0){
-        board[fromRow][fromCol].unitElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
         board[fromRow][fromCol].adaSquad = false;
+        board[fromRow][fromCol].healthBar.classList.remove('health-bar');
+        board[fromRow][fromCol].unitElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
       }
     }
     
@@ -255,7 +256,6 @@ function addAttackRange() {
       if (selectedUnitElement.unitElement.classList.contains('archerB') || selectedUnitElement.unitElement.classList.contains('archerR')) {
         if (distance <= 4 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
           board[i][j].gridElement.classList.add('attack-range');
-          board[i][j].gridElement.addEventListener('click', () => attack(i, j));
         }
       } else if (distance <= 1 && board[i][j].adaSquad && selectedUnitElement.team !== board[i][j].team) {
         board[i][j].gridElement.classList.add('attack-range');
