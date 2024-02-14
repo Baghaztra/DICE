@@ -18,6 +18,10 @@ for (let i = 0; i < size; i++) {
   const squad = document.createElement('div');
   grid.appendChild(squad);
 
+  const healthBar = document.createElement('div');
+  healthBar.classList.add('health-bar');
+  squad.appendChild(healthBar);
+
   const baris = Math.floor(i / panjang);
   const kolom = i % panjang;
 
@@ -59,6 +63,7 @@ for (let i = 0; i < size; i++) {
     adaSquad: true,
     team: team,
     healthPoints: healthPoints,
+    healthBar: healthBar,
   };
 } else {
   // Grid kosong
@@ -68,6 +73,7 @@ for (let i = 0; i < size; i++) {
     adaSquad: false,
     team: '',
     healthPoints: 0,
+    healthBar: null,
   };
 }
 
@@ -252,6 +258,10 @@ function attack(clickedRow, clickedCol) {
   target.gridElement.classList.remove('attack-range');
   target.gridElement.removeEventListener('click', () => attack(event, clickedRow, clickedCol));
   console.log("Target: ", target);
+
+  // Update health bar
+  const remainingHealthPercentage = (board[clickedRow][clickedCol].healthPoints / 6) * 100;
+  board[clickedRow][clickedCol].healthBar.style.width = `${remainingHealthPercentage}%`;
 }
 
 function rollTheDice() {

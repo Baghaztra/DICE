@@ -21,6 +21,7 @@ h1{
     float: left;
     border: 1px solid black;
     cursor: pointer;
+    position: relative;
 }
 .black {
     background-color: #262626;
@@ -77,6 +78,14 @@ h1{
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.health-bar {
+    position: sticky;
+    top: 40px;
+    height: 10px;
+    width: 50px;
+    background-color: #6DEB72;
 }
 
 .moveable.black {
