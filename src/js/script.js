@@ -20,7 +20,6 @@ for (let i = 0; i < size; i++) {
 
   const healthBar = document.createElement('div');
   healthBar.classList.add('health-bar');
-  squad.appendChild(healthBar);
 
   const baris = Math.floor(i / panjang);
   const kolom = i % panjang;
@@ -31,51 +30,57 @@ for (let i = 0; i < size; i++) {
     (kolom === 0 ) || (kolom === 11) ||
     (kolom === 1 && (baris === 1 || baris === 10)) || 
     (kolom === 10 && (baris === 1 || baris === 10))) 
-{
-  let team = '';
-  let healthPoints = 6;
+  {
+    let team = '';
+    let healthPoints = 6;
 
-  if ((kolom == 0 && (baris < 3 || baris > 8)) ||
-      (kolom == 1 && (baris == 1 || baris == 10))){
-    squad.classList.add('cavalryB');
-    team = 'blue';
-  } else if  ((kolom == 11 && (baris < 3 || baris > 8)) ||
-             (kolom == 10 && (baris == 1 || baris == 10))){
-    squad.classList.add('cavalryR');
-    team = 'red';
-  } else if (kolom === 1) {
-    squad.classList.add('infantriB');
-    team = 'blue';
-  } else if (kolom === 10) {
-    squad.classList.add('infantriR');
-    team = 'red';
-  } else if (kolom === 0) {
-    squad.classList.add('archerB');
-    team = 'blue';
-  } else if (kolom === 11) {
-    squad.classList.add('archerR');
-    team = 'red';
+    if ((kolom == 0 && (baris < 3 || baris > 8)) ||
+        (kolom == 1 && (baris == 1 || baris == 10))){
+      squad.classList.add('cavalryB');
+      squad.appendChild(healthBar);
+      team = 'blue';
+    } else if  ((kolom == 11 && (baris < 3 || baris > 8)) ||
+               (kolom == 10 && (baris == 1 || baris == 10))){
+      squad.classList.add('cavalryR');
+      squad.appendChild(healthBar);
+      team = 'red';
+    } else if (kolom === 1) {
+      squad.classList.add('infantriB');
+      squad.appendChild(healthBar);
+      team = 'blue';
+    } else if (kolom === 10) {
+      squad.classList.add('infantriR');
+      squad.appendChild(healthBar);
+      team = 'red';
+    } else if (kolom === 0) {
+      squad.classList.add('archerB');
+      squad.appendChild(healthBar);
+      team = 'blue';
+    } else if (kolom === 11) {
+      squad.classList.add('archerR');
+      squad.appendChild(healthBar);
+      team = 'red';
+    }
+    // Grid berisi
+    board[baris][kolom] = {
+      gridElement: grid,
+      unitElement: squad,
+      adaSquad: true,
+      team: team,
+      healthPoints: healthPoints,
+      healthBar: healthBar,
+    };
+  } else {
+    // Grid kosong
+    board[baris][kolom] = {
+      gridElement: grid,
+      unitElement: squad,
+      adaSquad: false,
+      team: '',
+      healthPoints: 0,
+      healthBar: healthBar,
+    };
   }
-  // Grid berisi
-  board[baris][kolom] = {
-    gridElement: grid,
-    unitElement: squad,
-    adaSquad: true,
-    team: team,
-    healthPoints: healthPoints,
-    healthBar: healthBar,
-  };
-} else {
-  // Grid kosong
-  board[baris][kolom] = {
-    gridElement: grid,
-    unitElement: squad,
-    adaSquad: false,
-    team: '',
-    healthPoints: 0,
-    healthBar: null,
-  };
-}
 
   // Nambahin hitam/putih silang   
   if ((baris + kolom) % 2 === 1) {
@@ -173,6 +178,7 @@ function squadMoveDistance() {
 function move(fromRow, fromCol, toRow, toCol) {
   if (board[fromRow][fromCol].adaSquad) {
     const fromElement = board[fromRow][fromCol].unitElement;
+    const fromHealthBar = board[fromRow][fromCol].healthBar;
 
     // Tambahkan unit ke grid yang diklik berikutnya
     board[toRow][toCol] = {
@@ -181,6 +187,7 @@ function move(fromRow, fromCol, toRow, toCol) {
       adaSquad: true,
       team: board[fromRow][fromCol].team,
       healthPoints: board[fromRow][fromCol].healthPoints,
+      healthBar: fromHealthBar, // Gunakan healthBar dari unit sebelumnya
       row: toRow,
       col: toCol,
     };
@@ -200,6 +207,9 @@ function move(fromRow, fromCol, toRow, toCol) {
       toElement.classList.add('cavalryR');
     }  
 
+    // Pindahkan health bar ke elemen unit yang baru
+    toElement.appendChild(fromHealthBar);
+
     // Hapus unit dari grid sebelumnya
     fromElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
     board[fromRow][fromCol].adaSquad = false;
@@ -209,6 +219,7 @@ function move(fromRow, fromCol, toRow, toCol) {
     console.log(`Memindahkan unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
   }
 }
+
 
 function addAttackRange() {
   for (let i = 0; i < panjang; i++) {
@@ -244,7 +255,6 @@ function removeAttackRange() {
 }
 
 function attack(clickedRow, clickedCol) {
-  // event.stopPropagation();
   // Logika serangan
   console.log(`Serang unit dari grid (${currentPosition.row}, ${currentPosition.col}) ke grid (${clickedRow}, ${clickedCol})`);
   const kocok = rollTheDice();
