@@ -29,6 +29,18 @@ function showRules() {
     `;
     document.getElementById("content").innerHTML = content;
 }
+function showPower() {
+    var popupElement = document.getElementById('popup');
+    popupElement.style.display = 'block';
+    document.getElementById("title").innerHTML = "<i class='bi bi-triangle-half'></i> Power";
+    const content = `
+    <p>
+      Setiap unit memiliki keunggulan dan kelemahan. Menyerang unit lain yang di-counter akan memakan 2 dadu, dan mengambil nilai yang lebih besar, begitu sebaliknya.
+    </p>
+    <img src="img/power.png" width="500px">
+    `;
+    document.getElementById("content").innerHTML = content;
+}
 
 function closePopup() {
     var popupElement = document.getElementById('popup');

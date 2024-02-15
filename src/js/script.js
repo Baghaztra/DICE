@@ -107,6 +107,7 @@ let selectedUnitElement;
 let turn = 'blue';
 let blueArmy = 20;
 let redArmy = 20;
+let kocok;
 
 function changeBackgroundColor() {
   var borderPapan = document.getElementById('borderPapan');
@@ -202,15 +203,15 @@ function squadMoveDistance() {
 }
 
 function action(fromRow, fromCol, toRow, toCol) {
-
   if (board[fromRow][fromCol].adaSquad) {
     // berarti nyerang :v
     if (board[toRow][toCol].adaSquad) {
       // Logika serangan
       console.log(`Serang unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
-      const kocok = Math.floor(Math.random() * 6) + 1;
-      const diceElement = document.getElementById('dice');
-      diceElement.innerHTML = `<i class="dice bi bi-dice-${kocok}-fill"></i>`;
+      attack(board[fromRow][fromCol], board[toRow][toCol]);
+      // const kocok = Math.floor(Math.random() * 6) + 1;
+      // const diceElement = document.getElementById('dice');
+      // diceElement.innerHTML = `<i class="dice bi bi-dice-${kocok}-fill"></i>`;
       
       console.log("[Debug] hp target awal : ", board[toRow][toCol].healthPoints);
       console.log("[Debug] kocok : ", kocok);
@@ -379,4 +380,48 @@ function surend() {
   <a href="index.html" class="btn btn-${code} p-5 m-5"><h1 class="text-center">Rematch?</h1></a><br>
   `;
   document.getElementById("content").innerHTML = content;
+}
+
+function attack(attacker, target){
+  const diceElement = document.getElementById('dice');
+  dice1 = Math.floor(Math.random() * 6) + 1;
+  dice2 = Math.floor(Math.random() * 6) + 1;
+  if (attacker.unitElement.classList.contains("cavalryR")||attacker.unitElement.classList.contains("cavalryB")) {
+    if(target.unitElement.classList.contains("archerR")||target.unitElement.classList.contains("archerB")){
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i> <i class="dice bi bi-dice-${dice2}"></i>`;
+      kocok = Math.max(dice1, dice2);
+    }else if(target.unitElement.classList.contains("infantriR")||target.unitElement.classList.contains("infantriB")){
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i> <i class="dice bi bi-dice-${dice2}"></i>`;
+      kocok = Math.min(dice1, dice2);
+    }else{
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i>`;
+      kocok = dice1;
+    }
+  } else
+  if (attacker.unitElement.classList.contains("archerR")||attacker.unitElement.classList.contains("archerB")) {
+    if(target.unitElement.classList.contains("infantriR")||target.unitElement.classList.contains("infantriB")){
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i> <i class="dice bi bi-dice-${dice2}"></i>`;
+      kocok = Math.max(dice1, dice2);
+    }else if(target.unitElement.classList.contains("cavalryR")||target.unitElement.classList.contains("cavalryB")){
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i> <i class="dice bi bi-dice-${dice2}"></i>`;
+      kocok = Math.min(dice1, dice2);
+    }else{
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i>`;
+      kocok = dice1;
+    }
+  } else
+  if (attacker.unitElement.classList.contains("infantriR")||attacker.unitElement.classList.contains("infantriB")) {
+    if(target.unitElement.classList.contains("cavalryR")||target.unitElement.classList.contains("cavalryB")){
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i> <i class="dice bi bi-dice-${dice2}"></i>`;
+      kocok = Math.max(dice1, dice2);
+    }else if(target.unitElement.classList.contains("archerR")||target.unitElement.classList.contains("archerB")){
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i> <i class="dice bi bi-dice-${dice2}"></i>`;
+      kocok = Math.min(dice1, dice2);
+    }else{
+      diceElement.innerHTML = `<i class="dice bi bi-dice-${dice1}"></i>`;
+      kocok = dice1;
+    }
+  } else {
+    console.log("Error");
+  }
 }
