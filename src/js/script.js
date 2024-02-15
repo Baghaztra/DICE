@@ -69,6 +69,7 @@ for (let i = 0; i < size; i++) {
       team: team,
       healthPoints: healthPoints,
       healthBar: healthBar,
+      bolehNyerang: true,
     };
   } else {
     // Grid kosong
@@ -79,6 +80,7 @@ for (let i = 0; i < size; i++) {
       team: '',
       healthPoints: 0,
       healthBar: healthBar,
+      bolehNyerang: true,
     };
   }
 
@@ -102,6 +104,30 @@ for (let i = 0; i < 12; i++) {
 let waitingForMove = false;
 let currentPosition = { row: 0, col: 0 };
 let selectedUnitElement;
+let turn = 'blue';
+let blueArmy = 20;
+let redArmy = 20;
+
+function changeBackgroundColor() {
+  var borderPapan = document.getElementById('borderPapan');
+
+  if (turn === 'blue') {
+      borderPapan.classList.remove('bg-secondary', 'bg-danger');
+      borderPapan.classList.add('bg-primary');
+  } else if (turn === 'red') {
+      borderPapan.classList.remove('bg-secondary', 'bg-primary');
+      borderPapan.classList.add('bg-danger');
+  } else {
+      borderPapan.classList.remove('bg-primary', 'bg-danger');
+      borderPapan.classList.add('bg-secondary');
+  }
+  for (let i = 0; i < panjang; i++) {
+    for (let j = 0; j < panjang; j++) {
+      board[i][j].bolehNyerang=true;
+    }
+  }
+  surendButton();
+}
 
 container.addEventListener('click', function(event) {
   const clickedElement = event.target;
@@ -111,7 +137,6 @@ container.addEventListener('click', function(event) {
     const clickedRow = board.findIndex(row => row.some(cell => cell.gridElement === clickedGrid));
     const clickedCol = board[clickedRow].findIndex(cell => cell.gridElement === clickedGrid);
     
-    currentPosition = { row: clickedRow, col: clickedCol };
     if (waitingForMove) {
       console.log('a');
       if (clickedGrid.classList.contains('moveable') || clickedGrid.classList.contains('attack-range')) {
@@ -121,12 +146,15 @@ container.addEventListener('click', function(event) {
       removeMoveableClass(); 
       removeAttackRange();
       waitingForMove = false;
-    } else if (board[clickedRow][clickedCol].adaSquad) {
+    } else if (board[clickedRow][clickedCol].adaSquad && board[clickedRow][clickedCol].team == turn) {
+      currentPosition = { row: clickedRow, col: clickedCol };
       waitingForMove = true; 
       selectedUnitElement = board[clickedRow][clickedCol];
       console.log("Selected: "+clickedRow+", "+clickedCol+": ", selectedUnitElement);
       addMoveableClass();
-      addAttackRange(); 
+      if (board[clickedRow][clickedCol].bolehNyerang) {
+        addAttackRange(); 
+      }
     }
   }
 });
@@ -174,6 +202,7 @@ function squadMoveDistance() {
 }
 
 function action(fromRow, fromCol, toRow, toCol) {
+
   if (board[fromRow][fromCol].adaSquad) {
     // berarti nyerang :v
     if (board[toRow][toCol].adaSquad) {
@@ -197,9 +226,27 @@ function action(fromRow, fromCol, toRow, toCol) {
 
       // apakah target mati?
       if(board[toRow][toCol].healthPoints <= 0){
-        board[fromRow][fromCol].adaSquad = false;
-        board[fromRow][fromCol].healthBar.classList.remove('health-bar');
-        board[fromRow][fromCol].unitElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
+        if (board[toRow][toCol].team == 'blue') {
+          blueArmy--;
+        }else{
+          redArmy--;
+        }
+        board[toRow][toCol].adaSquad = false;
+        board[toRow][toCol].healthBar.classList.remove('health-bar');
+        board[toRow][toCol].unitElement.classList.remove('cavalryB', 'cavalryR', 'infantriB', 'infantriR', 'archerB', 'archerR');
+        check();
+      }
+
+      // Tambahan
+      if (board[fromRow][fromCol].unitElement.classList.contains('archerB')) {
+        turn = 'red';
+        changeBackgroundColor()
+      }else if (board[fromRow][fromCol].unitElement.classList.contains('archerR')) {
+        turn = 'blue';
+        changeBackgroundColor()
+      }else{
+        board[fromRow][fromCol].bolehNyerang = false;
+        console.log("dah ga bole nyerang ", board[fromRow][fromCol]);
       }
     }
     
@@ -245,6 +292,14 @@ function action(fromRow, fromCol, toRow, toCol) {
       removeAttackRange();
   
       console.log(`Memindahkan unit dari grid (${fromRow}, ${fromCol}) ke grid (${toRow}, ${toCol})`);
+
+      if (board[fromRow][fromCol].team == 'blue') {
+        turn = 'red';
+        changeBackgroundColor()
+      }else if (board[fromRow][fromCol].team == 'red') {
+        turn = 'blue';
+        changeBackgroundColor()
+      }
     }
   }
 }
@@ -270,4 +325,58 @@ function removeAttackRange() {
       board[i][j].gridElement.classList.remove('attack-range');
     }
   }
+}
+
+function check(){
+  document.getElementById('blueSize').innerHTML = blueArmy;
+  document.getElementById('redSize').innerHTML = redArmy;
+  if (blueArmy == 0 || redArmy == 0) {
+    let winner = "";
+    let code = "";
+    if (blueArmy == 0) {
+      winner = "Red";
+      code = "danger";
+    } else if (redArmy == 0) {
+      winner = "Blue";
+      code = "primary";
+    }
+    var popupElement = document.getElementById('popup');
+    popupElement.style.display = 'block';
+    document.getElementById("title").innerHTML = `${winner} Team Wins!`;
+    const content = `
+    <a href="index.html" class="btn btn-${code} p-5 m-5"><h1 class="text-center">Rematch?</h1></a><br>
+    `;
+    document.getElementById("content").innerHTML = content;
+  }
+}
+
+function surendButton() {
+  let code = "";
+    if (turn == 'blue') {
+      code = "primary";
+    } else{
+      code = "danger";
+    }
+  const content = `
+    <h3 class="btn btn-${ code }" onclick="surend()"><i class="bi bi-flag-fill"></i> Surender</h3>
+  `;
+  document.getElementById("surendButton").innerHTML = content;
+}
+
+function surend() {
+  let code = "";
+  if (turn == 'blue') {
+    winner = "Red";
+    code = "danger";
+  } else {
+    winner = "Blue";
+    code = "primary";
+  }
+  var popupElement = document.getElementById('popup');
+  popupElement.style.display = 'block';
+  document.getElementById("title").innerHTML = `${winner} Team Wins!`;
+  const content = `
+  <a href="index.html" class="btn btn-${code} p-5 m-5"><h1 class="text-center">Rematch?</h1></a><br>
+  `;
+  document.getElementById("content").innerHTML = content;
 }
