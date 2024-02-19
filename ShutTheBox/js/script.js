@@ -1,5 +1,6 @@
 const box = document.getElementById('box');
 const playerCount = parseInt(document.getElementById('player').value);
+console.log(playerCount);
 const player = new Array[playerCount];
 
 for (let i = 0; i < playerCount; i++) {
@@ -8,5 +9,6 @@ for (let i = 0; i < playerCount; i++) {
         const number = document.createElement('div');
         number.classList.add(`number-${j}`);
         player[i].appendChild(number);
+        console.log(player[i]);
     }
 }
