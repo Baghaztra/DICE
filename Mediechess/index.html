@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Mediechess</title>
 </head>
+
 <body>
     <div class="row container">
         <div class="col-lg-3">
@@ -29,9 +31,13 @@
             <h5 class="text-secondary">Army size</h5>
             <table style="width: 100%;" class="text-center">
                 <tr>
-                    <td class="text-primary"><h1 id="blueSize" >20</h1></td>
+                    <td class="text-primary">
+                        <h1 id="blueSize">20</h1>
+                    </td>
                     <td>vs</td>
-                    <td class="text-danger"><h1 id="redSize">20</h1></td>
+                    <td class="text-danger">
+                        <h1 id="redSize">20</h1>
+                    </td>
                 </tr>
             </table>
             <hr>
@@ -40,24 +46,28 @@
             <div id="surendButton"></div>
 
         </div>
-        <div id = 'borderPapan' class="col-lg-6 p-4 bg-secondary">
+        <div id='borderPapan' class="col-lg-6 p-4 bg-secondary">
             <div class="chessBoard" id="container"></div>
         </div>
     </div>
     <div id="popup" class="position-absolute top-50 start-50 translate-middle" style="display: none;">
         <div class="card">
             <div class="card-body">
-              <h3 class="card-title mb-3" id="title">Welcome</h3>
-              <button onclick="closePopup()" class="btn btn-danger m-2 btn-sm position-absolute top-0 end-0"><i class="bi bi-x"></i></button>
-              <div class="card-text" id="content">
-                <p>Sebuah kegabutan di libur semester, yang coba menggunakan resource yang dimiliki untuk membuat apalah ini</p>
-                <p>Game ini terinspirasi dari permainan catur, tapi ya... gitu</p>
-                <h5 class='text-success'>Have fun!</h5>
-                <hr>
-                <p class='text=secondary mb-0'>Mainnya ama teman btw, kami blm bisa bikin AI v:</p>
-                <a href="https://www.instagram.com/baghaztra/" target="_blank" class="text-black text-decoration-none text-end">#Baghaztra</a><br>
-                <a href="https://www.instagram.com/topanisme_/" target="_blank" class="text-black text-decoration-none text-end">#Topan</a>
-              </div>
+                <h3 class="card-title mb-3" id="title">Welcome</h3>
+                <button onclick="closePopup()" class="btn btn-danger m-2 btn-sm position-absolute top-0 end-0"><i
+                        class="bi bi-x"></i></button>
+                <div class="card-text" id="content">
+                    <p>Sebuah kegabutan di libur semester, yang coba menggunakan resource yang dimiliki untuk membuat
+                        apalah ini</p>
+                    <p>Game ini terinspirasi dari permainan catur, tapi ya... gitu</p>
+                    <h5 class='text-success'>Have fun!</h5>
+                    <hr>
+                    <p class='text=secondary mb-0'>Mainnya ama teman btw, kami blm bisa bikin AI v:</p>
+                    <a href="https://www.instagram.com/baghaztra/" target="_blank"
+                        class="text-black text-decoration-none text-end">#Baghaztra</a><br>
+                    <a href="https://www.instagram.com/topanisme_/" target="_blank"
+                        class="text-black text-decoration-none text-end">#Topan</a>
+                </div>
             </div>
         </div>
     </div>
