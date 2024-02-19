@@ -21,21 +21,24 @@ header {
     padding-left: 1rem;
 }
 main {
+    /* height: 100vh; */
     display: flex;
     flex-direction: row;
-    overflow: scroll;
     gap: 70px;
     position: absolute;
     top: 70px;
-    overflow: scroll;
+    margin-left: 2rem;
 }
 
 main::-webkit-scrollbar {
     display: none;
 }
 .game {
+    display: inline-block;
     width: 300px;
     height: 500px;
     background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
+    box-shadow: 4px 4px 5px 2px rgb(80, 80, 80);
 }

@@ -1,10 +1,7 @@
 {
     "name": "catur-apalah-ni",
     "version": "1.0.0",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Topan and Baghaz",
+    "type": "module",
+    "author": "Topan, Baghaz, Pito",
     "license": "ISC"
 }
