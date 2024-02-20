@@ -45,6 +45,7 @@
     border-radius: 6px;
     position: relative;
     display: block;
+    margin-bottom: 100px;
 }
 
 .player1 {
@@ -54,18 +55,18 @@
     height: 10%;
     background-color: aqua;
     left: 10%;
-    flex-direction: row-reverse;
-    top: 0;
+    bottom: 0;
 }
 
 .player2 {
     display: none;
     position: absolute;
-    bottom: 0;
+    top: 0;
     width: 80%;
     height: 10%;
     background-color: aqua;
     left: 10%;
+    flex-direction: row-reverse;
 }
 
 .player3,
@@ -124,4 +125,15 @@ button.pass:hover {
 .choise {
     transform: perspective(800px) rotateY(180deg);
     backface-visibility: hidden;
+}
+
+button.dice{
+    display: none;
+    position: absolute;
+    border: none;
+    top: 50%;
+    left: 50%;
+    font-size: 90px;
+    background-color: transparent;
+    transform: translate(-50%, -50%);
 }
