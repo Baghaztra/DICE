@@ -50,13 +50,14 @@
 .player1 {
     display: none;
     position: absolute;
-    top: 0;
     width: 80%;
     height: 10%;
     background-color: aqua;
     left: 10%;
     flex-direction: row-reverse;
+    top: 0;
 }
+
 .player2 {
     display: none;
     position: absolute;
@@ -66,34 +67,61 @@
     background-color: aqua;
     left: 10%;
 }
-.player3 {
-    display: none;
-    position: absolute;
-    left: 0;
-    width: 10%;
-    height: 80%;
-    background-color: aqua;
-    top: 10%;
-    flex-direction: column;
-}
+
+.player3,
 .player4 {
     display: none;
     position: absolute;
-    right: 0;
     width: 10%;
     height: 80%;
     background-color: aqua;
     top: 10%;
-    flex-direction: column-reverse;
 }
 
-.player1 button, .player2 button {
+.player3 {
+    left: 0;
+    flex-direction: column;
+}
+
+.player4 {
+    right: 0;
+    flex-direction: column-reverse;
+
+}
+
+
+.player1 button,
+.player2 button {
     height: 100%;
     width: calc(100% - 7.6%);
 }
 
-.player3 button, .player4 button {
+.player1 button:hover,
+.player2 button:hover,
+.player3 button:hover,
+.player4 button:hover {
+    background-color: yellow;
+}
+
+button.pass {
+    background-color: red;
+    color: white;
+    text-transform: capitalize;
+    font-weight: 700;
+}
+
+button.pass:hover {
+    background-color: rgb(214, 1, 1);
+}
+
+.player3 button,
+.player4 button {
     min-width: 100%;
     height: calc(100% - 7.6%);
     /* height: 10px; */
+}
+
+.choise {
+    transform: perspective(800px) rotateY(180deg);
+    backface-visibility: hidden;
 }

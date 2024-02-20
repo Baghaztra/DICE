@@ -8,7 +8,7 @@ function start() {
     player = new Array(parseInt(playerCount.value));
 
     for (let i = 0; i < playerCount.value; i++) {
-        player[i]=  document.getElementById(`player${i+1}`);
+        player[i] = document.getElementById(`player${i + 1}`);
         for (let j = 1; j <= 12; j++) {
             const number = document.createElement('button');
             number.classList.add(`number-${j}`);
@@ -20,7 +20,7 @@ function start() {
         number.innerText = "pass";
         player[i].appendChild(number);
 
-        console.log(`Player ${i+1} `, player[i]);
+        console.log(`Player ${i + 1} `, player[i]);
         player[i].style.display = 'flex';
     }
     // console.log(playButton);
