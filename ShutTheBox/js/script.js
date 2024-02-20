@@ -21,8 +21,7 @@ function start() {
                 number.innerText = j;
         
                 number.addEventListener('click', function() {
-                    choose(j, i);
-                    number.classList.add('picked')
+                    choose(j, i, number);
                 });
         
                 player[i].playerElement.appendChild(number);
@@ -62,12 +61,19 @@ function rollTheDice() {
 }
 
 
-function choose(buttonNum, playerNum) {
+function choose(buttonNum, playerNum, numberElement) {
     if (!player[playerNum].pickedNumbers[buttonNum - 1]) {
         player[playerNum].numberPick += buttonNum;
         console.log(`Player${playerNum + 1} picked ${buttonNum}`);
         console.log(`Player${playerNum + 1} number picked: ${player[playerNum].numberPick}`);
         player[playerNum].pickedNumbers[buttonNum - 1] = true;
+        numberElement.classList.add('picked');
+    }else{
+        player[playerNum].numberPick -= buttonNum;
+        console.log(`Player${playerNum + 1} unpicked ${buttonNum}`);
+        console.log(`Player${playerNum + 1} number picked: ${player[playerNum].numberPick}`);
+        player[playerNum].pickedNumbers[buttonNum - 1] = false;
+        numberElement.classList.remove('picked');
     }
 }
 
