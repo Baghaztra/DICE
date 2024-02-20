@@ -24,6 +24,12 @@ for (let i = 0; i <= gameList.length; i++) {
     gameListItem.className = `game game-${i + 1}`;
     gameListItem.style.backgroundImage = `url(img/${gameName}.png)`;
 
+    // Menambahkan text untuk nama game
+    const gameTitle = document.createElement("p");
+    gameTitle.textContent = gameName;
+    gameTitle.className = "game-title";
+    gameListItem.appendChild(gameTitle);
+
     // Buat agar atas bawah gitu
     if (i % 2 !== 1) {
         gameListItem.style.marginTop = "100px";
