@@ -13,6 +13,7 @@ function start() {
                 playerElement: document.getElementById(`player${i+1}`),
                 numberPick: 0,
                 active: true,
+                pickedNumbers: Array(12).fill(false),
             }
             for (let j = 1; j <= 12; j++) {
                 const number = document.createElement('button');
@@ -21,6 +22,7 @@ function start() {
         
                 number.addEventListener('click', function() {
                     choose(j, i);
+                    number.classList.add('picked')
                 });
         
                 player[i].playerElement.appendChild(number);
@@ -52,16 +54,21 @@ function start() {
 }
 
 function rollTheDice() {
-    let rand = Math.floor(Math.random() * 6) + 1;
-    dice.innerHTML = `<i class="dice bi bi-dice-${rand}"></i></i>`;
-    nowDice = rand;
+    let rand1 = Math.floor(Math.random() * 6) + 1;
+    let rand2 = Math.floor(Math.random() * 6) + 1;
+    dice.innerHTML = `<i class="dice bi bi-dice-${rand1}"></i> <i class="dice bi bi-dice-${rand2}"></i>`;
+    nowDice = rand1 + rand2;
     console.log("Pilih nomor berjumlah ", nowDice);
 }
 
 
-function choose(buttonNum, playerNum){
-    player[playerNum].numberPick += buttonNum;
-    console.log(`Player${playerNum+1} picked ${buttonNum}`);
+function choose(buttonNum, playerNum) {
+    if (!player[playerNum].pickedNumbers[buttonNum - 1]) {
+        player[playerNum].numberPick += buttonNum;
+        console.log(`Player${playerNum + 1} picked ${buttonNum}`);
+        console.log(`Player${playerNum + 1} number picked: ${player[playerNum].numberPick}`);
+        player[playerNum].pickedNumbers[buttonNum - 1] = true;
+    }
 }
 
 function pass(playerNum){
