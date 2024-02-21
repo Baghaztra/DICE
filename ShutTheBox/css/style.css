@@ -66,7 +66,7 @@
     height: 10%;
     background-color: aqua;
     left: 10%;
-    flex-direction: row-reverse;
+    /* flex-direction: row-reverse; */
 }
 
 .player3,
@@ -86,7 +86,7 @@
 
 .player4 {
     right: 0;
-    flex-direction: column-reverse;
+    flex-direction: column;
 
 }
 
@@ -139,5 +139,9 @@ button.dice{
 }
 
 .picked {
+    background-color: yellowgreen;
+}
+
+.picked-hold{
     background-color: darkgray;
 }
