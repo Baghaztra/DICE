@@ -1,3 +1,8 @@
+body {
+    background-image: url('../../img/background.jpg');
+}
+
+
 .top {
     display: flex;
     flex-direction: column;
@@ -8,11 +13,10 @@
 
 .top .title {
     width: calc(100% - 10%);
-    /* background-color: gray; */
     font-size: 36px;
     font-weight: bolder;
     padding: 24px;
-    /* color: white; */
+    color: white;
     text-align: center;
     border-radius: 6px;
 }
@@ -41,32 +45,33 @@
 .box {
     height: calc(100vh - 20vh);
     width: calc(100vh - 20vh);
-    background-color: gray;
+    background-image: url('../../img/background2.webp');
+    background-size: contain;
     border-radius: 6px;
     position: relative;
     display: block;
     margin-bottom: 100px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 5px 6px rgba(0, 0, 0, 0.582);
+    color: white;
+    perspective: 800px;
 }
 
-.player1 {
+.player1,
+.player2 {
     display: none;
     position: absolute;
     width: 80%;
     height: 10%;
-    background-color: aqua;
     left: 10%;
+}
+
+.player1 {
     bottom: 0;
 }
 
 .player2 {
-    display: none;
-    position: absolute;
     top: 0;
-    width: 80%;
-    height: 10%;
-    background-color: aqua;
-    left: 10%;
-    /* flex-direction: row-reverse; */
 }
 
 .player3,
@@ -75,7 +80,6 @@
     position: absolute;
     width: 10%;
     height: 80%;
-    background-color: aqua;
     top: 10%;
 }
 
@@ -90,18 +94,39 @@
 
 }
 
-
 .player1 button,
 .player2 button {
     height: 100%;
     width: calc(100% - 7.6%);
+    border-radius: 5px;
+    transition: all 0.5s ease;
+    transform-style: preserve-3d;
+    box-shadow: 0 0 0px 0px black;
 }
 
-.player1 button:hover,
-.player2 button:hover,
-.player3 button:hover,
-.player4 button:hover {
+
+.player1 button:hover {
+    box-shadow: 0 10px 6px 0px black;
     background-color: yellow;
+    transform: translateY(-10px);
+}
+
+.player2 button:hover {
+    box-shadow: 0 -10px 6px 0px black;
+    background-color: yellow;
+    transform: translateY(10px);
+}
+
+.player3 button:hover {
+    box-shadow: -10px 0 6px 0px black;
+    background-color: yellow;
+    transform: translateX(10px);
+}
+
+.player4 button:hover {
+    box-shadow: 10px 0 6px 0px black;
+    background-color: yellow;
+    transform: translateX(-10px);
 }
 
 button.pass {
@@ -119,7 +144,10 @@ button.pass:hover {
 .player4 button {
     min-width: 100%;
     height: calc(100% - 7.6%);
-    /* height: 10px; */
+    border-radius: 5px;
+    transition: all 0.5s ease;
+    transform-style: preserve-3d;
+    box-shadow: 0 0 0px 0px black;
 }
 
 .choise {
@@ -127,7 +155,7 @@ button.pass:hover {
     backface-visibility: hidden;
 }
 
-button.dice{
+button.dice {
     display: none;
     position: absolute;
     border: none;
@@ -142,6 +170,20 @@ button.dice{
     background-color: yellowgreen;
 }
 
-.picked-hold{
+.picked-hold {
     background-color: darkgray;
+}
+
+.box .dice {
+    color: black;
+    padding: -10px;
+    transition: all .5s ease-in-out;
+}
+
+.box .dice1:hover {
+    font-size: 75px;
+}
+
+.box .dice2:hover {
+    font-size: 75px;
 }

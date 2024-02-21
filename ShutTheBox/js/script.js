@@ -7,12 +7,12 @@ let player;
 let nowDice = 0;
 
 function start() {
-    player = new Array(parseInt(playerCount.value)); 
+    player = new Array(parseInt(playerCount.value));
     number = new Array(parseInt(playerCount.value));
     if (playerCount.value > 0 && playerCount.value <= 4) {
         for (let i = 0; i < playerCount.value; i++) {
-            player[i]=  {
-                playerElement: document.getElementById(`player${i+1}`),
+            player[i] = {
+                playerElement: document.getElementById(`player${i + 1}`),
                 numberPick: 0,
                 pass: true,
                 active: true,
@@ -21,35 +21,35 @@ function start() {
             number[i] = new Array(10);
             for (let j = 1; j <= 10; j++) {
                 const n = document.createElement('button');
-                number[i][j-1] = n
-                number[i][j-1].classList.add(`number-${j}`);
-                number[i][j-1].innerText = j;
-        
-                number[i][j-1].addEventListener('click', function() {
-                    choose(j, i, number[i][j-1]);
+                number[i][j - 1] = n
+                number[i][j - 1].classList.add(`number-${j}`);
+                number[i][j - 1].innerText = j;
+
+                number[i][j - 1].addEventListener('click', function () {
+                    choose(j, i, number[i][j - 1]);
                 });
-        
-                player[i].playerElement.appendChild(number[i][j-1]);
+
+                player[i].playerElement.appendChild(number[i][j - 1]);
             }
-        
+
             const passButton = document.createElement('button');
             passButton.classList.add(`pass`);
             passButton.innerText = "pass";
-        
-            passButton.addEventListener('click', function() {
+
+            passButton.addEventListener('click', function () {
                 pass(i);
             });
-        
+
             player[i].playerElement.appendChild(passButton);
-        
+
             console.log(`Player ${i + 1} `, player[i]);
             player[i].playerElement.style.display = 'flex';
         }
-        
+
         // console.log(playButton);
         playButton.style.display = 'none';
         dice.style.display = 'block';
-    }else{
+    } else {
         const notifikasi = document.createElement('p');
         notifikasi.classList.add("text-danger");
         notifikasi.innerText = `Masukkan jumlah pleyer 1 - 4`;
@@ -58,39 +58,40 @@ function start() {
 }
 
 function rollTheDice() {
-    if (someoneWon()) {
-        // Tampilkan sebuah anu, yang nunjukin siapa yang menang, + tombol rematch
+    if (someoneWon() === true) {
+        $('#winner').modal('show');
 
+        // Tampilkan sebuah anu, yang nunjukin siapa yang menang, + tombol rematch
     } else if (done()) {
         for (let i = 0; i < playerCount.value; i++) {
             player[i].numberPick = 0;
-            console.log(`[Holding] Player ${i+1}: ${player[i].numberPick}`);
+            console.log(`[Holding] Player ${i + 1}: ${player[i].numberPick}`);
         }
         for (let i = 0; i < parseInt(playerCount.value); i++) {
             for (let j = 0; j < 10; j++) {
                 if (number[i][j].classList.contains('picked')) {
                     number[i][j].classList.add('picked-hold');
                     number[i][j].classList.remove('picked');
-                    number[i][j].removeEventListener('click', function() {
-                        choose(j, i, number[i][j-1]);
+                    number[i][j].removeEventListener('click', function () {
+                        choose(j, i, number[i][j - 1]);
                     });
                 }
             }
         }
         let rand1 = Math.floor(Math.random() * 6) + 1;
         let rand2 = Math.floor(Math.random() * 6) + 1;
-        dice.innerHTML = `<i class="dice bi bi-dice-${rand1}"></i> <i class="dice bi bi-dice-${rand2}"></i>`;
+        dice.innerHTML = `<i class="dice dice1 bi bi-dice-${rand1}"></i> <i class="dice dice2 bi bi-dice-${rand2}"></i>`;
         nowDice = rand1 + rand2;
         console.log("[Rolling the dice] Pilih nomor berjumlah ", nowDice);
-    } else{
+    } else {
         console.log("[Rolling the dice] Belum semua player siap ", player);
     }
 }
 
-function done(){
+function done() {
     for (let i = 0; i < playerCount.value; i++) {
-        if(player[i].numberPick != nowDice){
-            console.log(`[Belum memenuhi] Player ${i+1} belum siap`);
+        if (player[i].numberPick != nowDice) {
+            console.log(`[Belum memenuhi] Player ${i + 1} belum siap`);
             // console.log(player[i].numberPick,' != ', nowDice);
             return false;
         }
@@ -99,13 +100,16 @@ function done(){
 }
 
 function someoneWon() {
-    const sudahSemua = Array(10).fill(true);
+    const semuaSudahDipilih = Array(10).fill(true);
     for (let i = 0; i < playerCount.value; i++) {
-        if(player[i].pickedNumbers == sudahSemua){
-            return true;
+        const pickedNumbers = player[i].pickedNumbers;
+        if (!pickedNumbers.every(num => num === true)) {
+            // Jika ada pemain yang belum memilih semua nomor
+            return false;
         }
     }
-    return false;
+    // Jika semua pemain sudah memilih semua nomor
+    return true;
 }
 
 function choose(buttonNum, playerNum, numberElement) {
@@ -116,7 +120,7 @@ function choose(buttonNum, playerNum, numberElement) {
             console.log(`[Holding] Player${playerNum + 1} number holded: ${player[playerNum].numberPick}`);
             player[playerNum].pickedNumbers[buttonNum - 1] = true;
             numberElement.classList.add('picked');
-        }else{
+        } else {
             player[playerNum].numberPick -= buttonNum;
             console.log(`[Choosing] Player${playerNum + 1} unpicked ${buttonNum}`);
             console.log(`[Holding] Player${playerNum + 1} number holded: ${player[playerNum].numberPick}`);
@@ -126,8 +130,8 @@ function choose(buttonNum, playerNum, numberElement) {
     }
 }
 
-function pass(playerNum){
-    player[playerNum].numberPick = 0;
+function pass(playerNum) {
+    player[playerNum].numberPick = nowDice;
     player[playerNum].pass = true;
-    console.log(`[Choosing] Player${playerNum+1} pass`);
+    console.log(`[Choosing] Player${playerNum + 1} pass`);
 }
