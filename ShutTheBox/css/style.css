@@ -36,10 +36,14 @@ body {
 .top .play button {
     padding: 5px;
     border-radius: 0 6px 6px 0;
-    border: 2px solid rgb(28, 30, 54);
+    border: 2px solid blue;
     font-weight: 600;
-    background-color: gray;
+    background-color: blue;
     color: white;
+    transition: all 0.5s;
+}
+.top .play button:hover {
+    box-shadow: 0 0 5px 2px white;
 }
 
 .box {
@@ -139,6 +143,11 @@ button.pass {
 button.pass:hover {
     background-color: rgb(214, 1, 1);
 }
+button.pass.picked-hold:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    cursor: default;
+}
 
 .player3 button,
 .player4 button {
@@ -171,19 +180,25 @@ button.dice {
 }
 
 .picked-hold {
-    background-color: darkgray;
+    background-color: darkgray !important;
 }
 
 .box .dice {
+    font-size: 75px;
     color: black;
     padding: -10px;
     transition: all .5s ease-in-out;
 }
 
 .box .dice1:hover {
-    font-size: 75px;
+    font-size: 90px;
 }
 
 .box .dice2:hover {
-    font-size: 75px;
+    font-size: 90px;
+}
+
+.notif {
+    color: white;
+    text-shadow: 0 0 10px red;
 }
