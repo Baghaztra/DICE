@@ -44,13 +44,19 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Kegabutan lanjutan dari <a href="../Mediechess/index.html" class="text-black text-decoration-none">Mediechess</a>, yang coba menggunakan resource yang dimiliki (kali ini kami punya frontend :D) untuk membuat apalah ini</p>
+                                <p>Kegabutan lanjutan dari <a href="../Mediechess/index.html"
+                                        class="text-black text-decoration-none">Mediechess</a>, yang coba menggunakan
+                                    resource yang dimiliki (kali ini kami punya frontend :D) untuk membuat apalah ini
+                                </p>
                                 <h5 class='text-success'>Have fun!</h5>
                                 <hr>
                                 <p class='text=secondary'>Mainnya ama teman btw, kami blm bisa bikin AI v:</p>
-                                <a href="https://www.instagram.com/baghaztra/" target="_blank" class="text-black text-decoration-none text-end">Baghaztra</a><br>
-                                <a href="https://www.instagram.com/topanisme_/" target="_blank" class="text-black text-decoration-none text-end">Topan</a><br>
-                                <a href="https://www.instagram.com/pitok_df/" target="_blank" class="text-black text-decoration-none text-end">Pitok</a>
+                                <a href="https://www.instagram.com/baghaztra/" target="_blank"
+                                    class="text-black text-decoration-none text-end">Baghaztra</a><br>
+                                <a href="https://www.instagram.com/topanisme_/" target="_blank"
+                                    class="text-black text-decoration-none text-end">Topan</a><br>
+                                <a href="https://www.instagram.com/pitok_df/" target="_blank"
+                                    class="text-black text-decoration-none text-end">Pitok</a>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -70,8 +76,10 @@
                             <div class="modal-body">
                                 <ul class="list-group">
                                     <li class="list-group-item">Permainan dimainkan dengan gatcha dadu di tengah</li>
-                                    <li class="list-group-item">Setiap player harus memilih nomor yang sama dengan jumlah mata dadu</li>
-                                    <li class="list-group-item">Jika kombinasi nomor tidak ada yang sesuai, tekan tombol pass</li>
+                                    <li class="list-group-item">Setiap player harus memilih nomor yang sama dengan
+                                        jumlah mata dadu</li>
+                                    <li class="list-group-item">Jika kombinasi nomor tidak ada yang sesuai, tekan tombol
+                                        pass</li>
                                     <li class="list-group-item">Sebuah nomor hanya dapat dipilih sekali</li>
                                     <li class="list-group-item">Player yang menghabiskan setiap nomor duluan menang</li>
                                 </ul>
@@ -131,7 +139,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="modal-body"  id="whoWon"></div>
+                            <div class="modal-body" id="whoWon"></div>
                             <div class="modal-footer">
                                 <a href="" onclick="location.reload()" type="button" class="btn btn-danger"
                                     data-bs-dismiss="modal">Restart</a>
@@ -141,8 +149,13 @@
                 </div>
             </div>
             <div class="play" id="play">
+                <h3>Pilih Jumlah Player</h3>
                 <div class="input-field">
-                    <input type="number" name="" id="player"><button onclick="start()">Start!</button>
+                    <button id="player" value="1">1</button>
+                    <button id="player" value="2">2</button>
+                    <button id="player" value="3">3</button>
+                    <button id="player" value="4">4</button>
+                    <button onclick="start()">Start!</button>
                 </div>
             </div>
             <div class="box">
