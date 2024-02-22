@@ -22,7 +22,9 @@ body {
 }
 
 .top .play {
-    width: 350;
+    width: auto;
+    display: grid;
+    place-items: center;
     height: 100px;
 }
 
