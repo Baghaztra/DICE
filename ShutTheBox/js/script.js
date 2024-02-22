@@ -1,17 +1,19 @@
 const box = document.getElementById('box');
-const playerCount = document.getElementById('player');
+// const playerCount = document.getElementById('player');
 const playButton = document.getElementById('play');
 const dice = document.querySelector(".dice");
+let playerCount = 0;
 let number;
 let player;
 let nowDice = 0;
 let turn = 0;
 
-function start() {
-    player = new Array(parseInt(playerCount.value));
-    number = new Array(parseInt(playerCount.value));
-    if (playerCount.value > 0 && playerCount.value <= 4) {
-        for (let i = 0; i < playerCount.value; i++) {
+function start(playerCounts) {
+    playerCount = playerCounts;
+    player = new Array(parseInt(playerCount));
+    number = new Array(parseInt(playerCount));
+    if (playerCount > 0 && playerCount <= 4) {
+        for (let i = 0; i < playerCount; i++) {
             player[i] = {
                 playerElement: document.getElementById(`player${i + 1}`),
                 numberPick: 0,
@@ -67,12 +69,12 @@ function rollTheDice() {
         $('#winner').modal('show');
 
     } else if (done()) {
-        for (let i = 0; i < playerCount.value; i++) {
+        for (let i = 0; i < playerCount; i++) {
             player[i].numberPick = 0;
             console.log(`[Holding] Player ${i + 1}: ${player[i].numberPick}`);
             player[i].passButton.classList.remove('picked-hold');
         }
-        for (let i = 0; i < parseInt(playerCount.value); i++) {
+        for (let i = 0; i < parseInt(playerCount); i++) {
             for (let j = 0; j < 10; j++) {
                 if (number[i][j].classList.contains('picked')) {
                     number[i][j].classList.add('picked-hold');
@@ -95,7 +97,7 @@ function rollTheDice() {
 }
 
 function done() {
-    for (let i = 0; i < playerCount.value; i++) {
+    for (let i = 0; i < playerCount; i++) {
         if (player[i].numberPick != nowDice) {
             console.log(`[Belum memenuhi] Player ${i + 1} belum siap`);
             // console.log(player[i].numberPick,' != ', nowDice);
@@ -106,7 +108,7 @@ function done() {
 }
 
 function someoneWon() {
-    for (let i = 0; i < playerCount.value; i++) {
+    for (let i = 0; i < playerCount; i++) {
         const pickedNumbers = player[i].pickedNumbers;
         if (pickedNumbers.every(num => num === true)) {
             // Jika ada pemain yang belum memilih semua nomor
@@ -118,10 +120,10 @@ function someoneWon() {
 }
 
 function whoWon() {
-    for (let i = 0; i < playerCount.value; i++) {
+    for (let i = 0; i < playerCount; i++) {
         const pickedNumbers = player[i].pickedNumbers;
         if (pickedNumbers.every(num => num === true)) {
-            if (playerCount.value == 1) {
+            if (playerCount == 1) {
                 return `Turn needed: ${turn}!`;
             }
             let _winner= '';
