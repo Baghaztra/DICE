@@ -3,6 +3,7 @@ const mainContainer = document.getElementById("main");
 const gameList = [
     "Mediechess",
     "ShutTheBox",
+    "MemoryChess",
     "KocokGame",
     null,
     null,
