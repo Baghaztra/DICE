@@ -6,17 +6,17 @@ var player2;
 
 console.log(board);
 
-function start(){
+function start() {
     for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
             const piece = document.createElement('div');
-            piece.classList.add('item',board[i][j].colorClass);
+            piece.classList.add('item', board[i][j].colorClass);
             boardElement.appendChild(piece);
         }
     }
 }
 
-function createRandomBoard (){
+function createRandomBoard() {
     const board = Array.from({ length: 5 }, () =>
         Array.from({ length: 5 }, () => {
             const colors = ['red', 'yellow', 'blue'];

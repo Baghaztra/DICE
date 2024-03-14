@@ -1,0 +1,50 @@
+.game-title {
+    font-weight: 600;
+}
+
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    word-spacing: 23px;
+}
+
+.item {
+    width: 60px;
+    height: 60px;
+    background-color: rgb(204, 155, 91);
+    cursor: pointer;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    display: block;
+    border-radius: 6px;
+    position: relative;
+}
+
+.color1,
+.color2,
+.color3 {
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    box-sizing: border-box;
+    border-radius: inherit;
+}
+
+.color1 {
+    background-color: red;
+}
+
+.color2 {
+    background-color: yellow;
+}
+
+.color3 {
+    background-color: blue;
+}
+
+.flipped {
+    transform: rotateY(180deg);
+}
