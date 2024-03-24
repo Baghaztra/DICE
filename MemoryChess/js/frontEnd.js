@@ -7,14 +7,11 @@ item.forEach(function (e) {
     e.appendChild(piece);
     e.addEventListener('click', function () {
         e.classList.contains('flipped') ? e.classList.remove('flipped') : e.classList.add('flipped');
-        var colorElement = e.querySelector('.color1');
+        var colorElement = e.querySelector(`.${diceColor}`);
         setTimeout(function () {
-            if (colorElement && colorElement.classList.contains('color1')) {
+            if (!(colorElement && colorElement.classList.contains(`${diceColor}`))) {
                 e.classList.remove('flipped')
             }
         }, 500)
-
-
-
     });
 });

@@ -1,0 +1,11 @@
+.dice {
+    width: 60px;
+    height: 60px;
+    background-color: rgb(204, 155, 91);
+    cursor: pointer;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+    display: block;
+    border-radius: 6px;
+    position: relative;
+}
