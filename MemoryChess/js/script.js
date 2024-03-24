@@ -3,16 +3,22 @@ const board = createRandomBoard();
 
 var player1;
 var player2;
+var started = false;
 
 console.log(board);
 
 function start(){
-    for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < 5; j++) {
-            const piece = document.createElement('div');
-            piece.classList.add('item',board[i][j].colorClass);
-            boardElement.appendChild(piece);
+    if (!started) {
+        started = true;
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                const piece = document.createElement('div');
+                piece.classList.add('item',board[i][j].colorClass);
+                boardElement.appendChild(piece);
+            }
         }
+    }else{
+        alert("the game already started");
     }
 }
 
