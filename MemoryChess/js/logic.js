@@ -101,12 +101,19 @@ function nextTurn(_score){
 }
 
 function rollTheDice(){
+    diceColorElement = document.createElement('div');
+    diceColor = 'color' + (Math.floor(Math.random() * 3) + 1);
+    diceColorElement.classList.add(diceColor);
+    if (dice.hasChildNodes()) {
+        dice.removeChild(dice.firstChild);
+    }
+    dice.appendChild(diceColorElement);
     dice.classList.toggle('flipped');
     newDiceColor = 'color' + (Math.floor(Math.random() * 3) + 1);
     setTimeout(() => {
         dice.classList.toggle('flipped');
         diceColorElement.classList.remove(diceColor);  
         diceColorElement.classList.add(newDiceColor);
-        diceColor = new newDiceColor;
+        diceColor = newDiceColor;
     }, 200);
 }
