@@ -9,3 +9,7 @@
     border-radius: 6px;
     position: relative;
 }
+
+.active{
+    color: blue;
+}

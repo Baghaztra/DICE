@@ -2,30 +2,39 @@
 const boardElement = document.querySelector('.board');
 const board = createRandomBoard();
 const dice = document.querySelector('.dice');
-
-var player1;
-var player2;
+const player1 = {
+    playerElemet: document.getElementById('player1'),
+    score: 0
+}
+const player2 = {
+    playerElemet: document.getElementById('player2'),
+    score: 0
+}
+var diceColorElement;
 var started = false;
-
 var firstTime = true;
+var newDiceColor = "";
 var diceColor = "";
-
-console.log(board);
+var turn = "";
 
 function start(){
     if (started) {
         started = false;
         location.reload();
-    }
-    started = true;
-    for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < 5; j++) {
-            const piece = document.createElement('div');
-            piece.classList.add('item',board[i][j].colorClass);
-            boardElement.appendChild(piece);
+    }else{
+        document.getElementById('player').style.display = 'block';
+        started = true;
+        player1.playerElemet.classList.add('active');
+        turn = 'player1';
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                const piece = document.createElement('div');
+                piece.classList.add('item',board[i][j].colorClass);
+                boardElement.appendChild(piece);
+            }
         }
+        spawnTheDice();
     }
-    rollTheDice();
 }
 
 function createRandomBoard() {
@@ -42,38 +51,62 @@ function createRandomBoard() {
     return board;
 };
 
-function rollTheDice() {
-    const diceColorElement = document.createElement('div');
+function spawnTheDice() {
+    diceColorElement = document.createElement('div');
     diceColor = 'color' + (Math.floor(Math.random() * 3) + 1);
     diceColorElement.classList.add(diceColor);
-
     if (dice.hasChildNodes()) {
         dice.removeChild(dice.firstChild);
     }
     dice.appendChild(diceColorElement);
 
-    // Menambahkan event listener untuk mengubah kelas 'flipped' ketika dadu diklik
+    dice.classList.toggle('flipped');
     dice.addEventListener('click', function () {
-        // Menghapus kelas 'flipped' jika sudah ada, atau menambahkannya jika belum ada
         dice.classList.toggle('flipped');
+        newDiceColor = 'color' + (Math.floor(Math.random() * 3) + 1);
         
-        // Menghasilkan warna dadu baru setiap kali diklik
-        const newDiceColor = 'color' + (Math.floor(Math.random() * 3) + 1);
-        
-        if (firstTime) {
-            firstTime = false;
-        }else{
+        // if (firstTime) {
+        //     firstTime = false;
+        // }else{
             setTimeout(() => {
                 dice.classList.toggle('flipped');
             }, 200);
-        }
-        // Menghapus kelas warna yang lama
-        diceColorElement.classList.remove(diceColor);
-        
-        // Menambahkan kelas warna yang baru
+        // }
+        diceColorElement.classList.remove(diceColor);  
         diceColorElement.classList.add(newDiceColor);
-
-        // Mengupdate variabel diceColor dengan warna yang baru
         diceColor = newDiceColor;
     });
+}
+
+function nextTurn(_score){
+    if (turn == 'player1') {
+        player1.playerElemet.classList.remove('active');
+        player2.playerElemet.classList.add('active');
+        turn = 'player2';
+        if(_score){
+            player1.score++;
+            player1.playerElemet.textContent = "Player 1: " + player1.score;
+            rollTheDice();
+        }
+    }else{
+        player2.playerElemet.classList.remove('active');
+        player1.playerElemet.classList.add('active');
+        turn = 'player1';
+        if(_score){
+            player2.score++;
+            player2.playerElemet.textContent = "Player 2: " + player2.score;
+            rollTheDice();
+        }
+    }
+}
+
+function rollTheDice(){
+    dice.classList.toggle('flipped');
+    newDiceColor = 'color' + (Math.floor(Math.random() * 3) + 1);
+    setTimeout(() => {
+        dice.classList.toggle('flipped');
+        diceColorElement.classList.remove(diceColor);  
+        diceColorElement.classList.add(newDiceColor);
+        diceColor = new newDiceColor;
+    }, 200);
 }

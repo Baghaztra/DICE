@@ -9,9 +9,12 @@ item.forEach(function (e) {
         e.classList.contains('flipped') ? e.classList.remove('flipped') : e.classList.add('flipped');
         var colorElement = e.querySelector(`.${diceColor}`);
         setTimeout(function () {
+            var _score = true;
             if (!(colorElement && colorElement.classList.contains(`${diceColor}`))) {
-                e.classList.remove('flipped')
+                e.classList.remove('flipped');
+                _score = false;
             }
+            nextTurn(_score);
         }, 500)
     });
 });
