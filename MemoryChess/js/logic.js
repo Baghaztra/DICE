@@ -16,6 +16,7 @@ var firstTime = true;
 var newDiceColor = "";
 var diceColor = "";
 var turn = "";
+var openened = 0;
 
 function start(){
     if (started) {
@@ -65,13 +66,9 @@ function spawnTheDice() {
         dice.classList.toggle('flipped');
         newDiceColor = 'color' + (Math.floor(Math.random() * 3) + 1);
         
-        // if (firstTime) {
-        //     firstTime = false;
-        // }else{
-            setTimeout(() => {
-                dice.classList.toggle('flipped');
-            }, 200);
-        // }
+        setTimeout(() => {
+            dice.classList.toggle('flipped');
+        }, 200);
         diceColorElement.classList.remove(diceColor);  
         diceColorElement.classList.add(newDiceColor);
         diceColor = newDiceColor;
@@ -87,6 +84,10 @@ function nextTurn(_score){
             player1.score++;
             player1.playerElemet.textContent = "Player 1: " + player1.score;
             rollTheDice();
+            openened++;
+            if (openened == 25) {
+                gameOver();
+            }
         }
     }else{
         player2.playerElemet.classList.remove('active');
@@ -96,6 +97,10 @@ function nextTurn(_score){
             player2.score++;
             player2.playerElemet.textContent = "Player 2: " + player2.score;
             rollTheDice();
+            openened++;
+            if (openened == 25) {
+                gameOver();
+            }
         }
     }
 }
@@ -116,4 +121,14 @@ function rollTheDice(){
         diceColorElement.classList.add(newDiceColor);
         diceColor = newDiceColor;
     }, 200);
+}
+
+function gameOver(){
+    if (player1.score > player2.score) {
+        console.log("Player 1 WIN")
+    }else if (player1.score < player2.score) {        
+        console.log("Player 2 WIN")
+    }else{
+        console.log("DRAW")
+    }
 }
