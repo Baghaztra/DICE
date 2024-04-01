@@ -83,11 +83,11 @@ function nextTurn(_score){
         if(_score){
             player1.score++;
             player1.playerElemet.textContent = "Player 1: " + player1.score;
-            rollTheDice();
             openened++;
-            if (openened == 25) {
+            if (openened >= 25) {
                 gameOver();
             }
+            rollTheDice();
         }
     }else{
         player2.playerElemet.classList.remove('active');
@@ -96,11 +96,11 @@ function nextTurn(_score){
         if(_score){
             player2.score++;
             player2.playerElemet.textContent = "Player 2: " + player2.score;
-            rollTheDice();
             openened++;
-            if (openened == 25) {
+            if (openened >= 25) {
                 gameOver();
             }
+            rollTheDice();
         }
     }
 }
@@ -124,11 +124,15 @@ function rollTheDice(){
 }
 
 function gameOver(){
+    let winner = "";
     if (player1.score > player2.score) {
-        console.log("Player 1 WIN")
+        winner = "Player 1 WIN";
     }else if (player1.score < player2.score) {        
-        console.log("Player 2 WIN")
+        winner = "Player 2 WIN";
     }else{
-        console.log("DRAW")
+        winner = "DRAW";
     }
+    document.getElementById('gameover').innerText = winner;
+    // document.getElementById('winner').aria('show')
+    $('#winner').modal('show');
 }
