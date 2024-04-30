@@ -72,6 +72,7 @@ function spawnTheDice() {
         diceColorElement.classList.remove(diceColor);  
         diceColorElement.classList.add(newDiceColor);
         diceColor = newDiceColor;
+        nextTurn();
     });
 }
 
