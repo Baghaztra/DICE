@@ -4,17 +4,7 @@ const gameList = [
     "Mediechess",
     "ShutTheBox",
     "MemoryChess",
-    "KocokGame",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
+    "LiarsDice",
 ];
 
 for (let i = 0; i <= gameList.length; i++) {
@@ -23,7 +13,7 @@ for (let i = 0; i <= gameList.length; i++) {
     gameListItem.href = `${gameName}/index.html`;
     gameListItem.id = gameName;
     gameListItem.className = `game game-${i + 1}`;
-    gameListItem.style.backgroundImage = `url(img/${gameName}.png)`;
+    gameListItem.style.backgroundImage = `url(/img/${gameName}.png)`;
 
     // Menambahkan text untuk nama game
     const gameTitle = document.createElement("p");

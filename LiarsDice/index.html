@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liar's Dice</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container mt-3">
+        <h1 class="game-title">Liar's Dice</h1>
+        <div class="menu mb-3">
+            <!-- Button trigger about -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#about">
+                <i class="bi bi-question-circle"></i>
+            </button>
+            <!-- Button trigger rules -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rules">
+                <i class="bi bi-list-check"></i>
+            </button>
+            <!-- Button trigger restart -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#restart">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+            <!-- Button trigger exit -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exit">
+                <i class="bi bi-box-arrow-left"></i>
+            </button>
+
+            <!-- Modal about -->
+            <div class="modal fade" id="about" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">About</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Kegabutan berikutnya, yang terinspirasi dari movie "Pirates of the Caribbean: Dead Man's Chest". Sebuah game yang dimainkan kru kapal Dutchman dengan dadu.</p>
+                            <h5 class='text-success'>Have fun!</h5>
+                            <hr>
+                            <p class='text=secondary'>Mainnya ama teman btw, kami masih blm bisa bikin AI v:</p>
+                            <a href="https://www.instagram.com/baghaztra/" target="_blank"
+                                class="text-black text-decoration-none text-end">Baghaztra</a><br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal rules -->
+            <div class="modal fade" id="rules" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Rules</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">Permainan dimulai dengan roll 1 dadu, dan player akan permain berurutan berdasarkan lemparan dadu</li>
+                                <li class="list-group-item">Pemain diberikan masing-masing 5 dadu, kemudian semuanya diroll dan disembunyikan</li>
+                                <li class="list-group-item">Player boleh melihat dadunya sendiri, bergantian sesuai urutan, dan jika ada yang ketahuan mengintip, boleh roll ulang</li>
+                                <li class="list-group-item">Setelah semuanya melihat, player paling berani boleh menebak ada berapa mata dadu yang muncul, ex: mata dadu 4  ada 7, dll</li>
+                                <li class="list-group-item">Seorang player lain boleh menebak kalau itu salah, dan jika benar, player yang memasang tebakan akan kehilangan 1 dadu, dan jika tebakan benar, player yang menuduh akan kehilangan 1 dadu</li>
+                                <li class="list-group-item">Player terakhir yang tersisa akan menang</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal exit -->
+            <div class="modal fade" id="exit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Yakin Ingin Keluar?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                            <a href="../" class="btn btn-primary">Yaaa</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal restart -->
+            <div class="modal fade" id="restart" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Yakin Ingin Mengulang Permainan?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                            <a href="" onclick="location.reload()" class="btn btn-primary">Yaaa</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal winner -->
+            <div class="modal fade" id="winner" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="gameover">Game Over</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="whoWon"></div>
+                        <div class="modal-footer">
+                            <a href="" onclick="location.reload()" type="button" class="btn btn-danger"
+                                data-bs-dismiss="modal">Restart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
